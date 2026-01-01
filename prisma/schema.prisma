@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  clerkUserId       String   @unique
+  email             String   @unique
+  name              String?
+  imageUrl          String?
+
+  bio               String?
+  experience        Int?
+  skills            String[]
+
+  
+  industryInsightId String?  @db.ObjectId
+  industryInsight   IndustryInsight? @relation(fields: [industryInsightId], references: [id])
+
+  assessments       Assessment[]
+  resume            Resume?
+  coverLetter       CoverLetter[]
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Assessment {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  quizScore     Float
+  questions     Json[]
+  category      String
+  improvementTip String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model Resume {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id])
+  content     String   // ✅ removed @db.Text
+  atsScore    Float?
+  feedback    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model CoverLetter {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+  content         String
+  jobDescription  String?
+  companyName     String
+  jobTitle        String
+  status          String    @default("draft")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model IndustryInsight {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  industry      String    @unique
+
+  users         User[]
+
+  salaryRanges  Json[]
+  growthRate    Float
+  demandLevel   String
+  topSkills     String[]
+
+  marketOutlook String
+  keyTrends     String[]
+  recommendedSkills String[]
+
+  lastUpdated   DateTime  @default(now())
+  nextUpdate    DateTime
+}
