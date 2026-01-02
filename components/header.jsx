@@ -5,6 +5,7 @@ import {
   LayoutDashboard,
   FileText,
   GraduationCap,
+  FileSearch,
   ChevronDown,
   StarsIcon,
 } from "lucide-react";
@@ -68,12 +69,9 @@ export default async function Header() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link
-                    href="/ai-cover-letter"
-                    className="flex items-center gap-2"
-                  >
-                    <PenBox className="h-4 w-4" />
-                    Cover Letter
+                  <Link href="/analyse-resume" className="flex items-center gap-2">
+                    <FileSearch className="h-4 w-4"/>
+                    Analyse Resume
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -82,6 +80,16 @@ export default async function Header() {
                     Interview Prep
                   </Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/ai-cover-letter"
+                    className="flex items-center gap-2"
+                  >
+                    <PenBox className="h-4 w-4" />
+                    Cover Letter
+                  </Link>
+                </DropdownMenuItem>
+
               </DropdownMenuContent>
             </DropdownMenu>
           </SignedIn>
@@ -101,7 +109,7 @@ export default async function Header() {
                   userPreviewMainIdentifier: "font-semibold",
                 },
               }}
-              // afterSignOutUrl="/"
+            // afterSignOutUrl="/"
             />
           </SignedIn>
         </div>
