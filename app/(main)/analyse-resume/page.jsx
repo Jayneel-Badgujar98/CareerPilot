@@ -114,7 +114,7 @@ export default function ResumeAnalyzer() {
               Advanced biometric scan for your career documents. Optimize for ATS algorithms and Human Recruiters.
             </p>
           </div>
-          <div className="flex flex-col items-start md:items-end gap-3 w-full md:w-auto">
+          {/* <div className="flex flex-col items-start md:items-end gap-3 w-full md:w-auto">
             {result && !result.error && (
               <button
                 onClick={handleDownloadReport}
@@ -123,7 +123,7 @@ export default function ResumeAnalyzer() {
                 <Download size={16} /> Export Report
               </button>
             )}
-          </div>
+          </div> */}
         </header>
       </div>
 
