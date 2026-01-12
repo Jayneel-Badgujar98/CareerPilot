@@ -21,7 +21,6 @@ export default function MockInterviewPage() {
           </p>
         </div>
       </div>
-
       <Quiz />
     </div>
   );
