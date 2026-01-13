@@ -28,6 +28,7 @@ model User {
   industryInsight   IndustryInsight? @relation(fields: [industryInsightId], references: [id])
 
   assessments       Assessment[]
+  mockInterviews    MockInterview[]
   resume            Resume?
   coverLetter       CoverLetter[]
 
@@ -92,4 +93,30 @@ model IndustryInsight {
 
   lastUpdated   DateTime  @default(now())
   nextUpdate    DateTime
+}
+
+// prisma/schema.prisma
+
+model MockInterview {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  
+  // Job Details
+  jobRole     String
+  jobDescription String? // The JD they pasted
+  companyName String?
+  
+  // Settings
+  interviewType String // HR, Technical, Behavioral
+  difficulty    String // Easy, Medium, Hard
+  duration      Int    // 15, 30, 45, or custom
+
+  // Results
+  score       Int?
+  feedback    Json?    // The full AI debrief JSON
+  status      String   @default("completed") // completed, partial
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
 }
