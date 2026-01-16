@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import { analyzeResumeAction } from "@/actions/analyse-resume";
 import ResumeRefiner from "./_components/resume-refiner";
+import BackButton from "@/components/backButton";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -105,6 +106,7 @@ export default function ResumeAnalyzer() {
 
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 md:px-6 pt-8 md:pt-12 pb-6 md:pb-8">
+          <BackButton />
         <header className="border-b border-neutral-800 pb-6 md:pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 to-neutral-500 tracking-tight">

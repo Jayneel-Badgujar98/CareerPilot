@@ -52,8 +52,14 @@ export default function SetupPage() {
             // The backend returns: { sessionId: "65a123..." }
             const sessionId = data.sessionId;
 
+            console.log("🔵 Mock Interview Session Created:", sessionId);
+
+            if (!sessionId) {
+                throw new Error("No sessionId returned from backend");
+            }
+
             // 3. REDIRECT TO THE REAL DYNAMIC PAGE
-            router.push(`/interview-prep/ai-mock-interview/room/${sessionId}`);
+            router.push(`/ai-interview-prep/ai-mock-interview/room/${sessionId}`);
 
         } catch (error) {
             console.error("Error starting interview:", error);
@@ -97,14 +103,14 @@ export default function SetupPage() {
                         {/* Inputs Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label className="text-sm text-neutral-400 mb-2 block">Company Website (Optional)</label>
+                                <label className="text-sm text-neutral-400 mb-2 block">Company Name or Website URL (Optional)</label>
                                 <div className="flex items-center bg-black/40 border border-white/10 rounded-xl px-3">
                                     <LinkIcon className="w-4 h-4 text-neutral-500" />
                                     <input
                                         type="text"
                                         value={company}
                                         onChange={(e) => setCompany(e.target.value)}
-                                        placeholder="https://company.com"
+                                        placeholder="Google / www.google.com (Optional)"
                                         className="w-full bg-transparent p-3 text-sm outline-none"
                                     />
                                 </div>

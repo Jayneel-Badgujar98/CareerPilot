@@ -39,7 +39,7 @@ export default function InterviewHub() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           
           <FeatureCard 
-            href="/interview-prep/ai-mock-interview"
+            href="/ai-interview-prep/ai-mock-interview"
             title="AI Mock Interview"
             description="Experience a realistic voice interview with our AI. Get instant feedback on your tone, pace, and answer quality."
             icon={<Mic className="w-6 h-6 text-white" />}
@@ -49,7 +49,7 @@ export default function InterviewHub() {
           />
 
           <FeatureCard 
-            href="/interview-prep/mock-interview-quiz"
+            href="/ai-interview-prep/mock-interview-quiz"
             title="Mock Interview Quiz"
             description="Access 5000+ curated questions from top tech companies. Test your knowledge across multiple domains."
             icon={<FileText className="w-6 h-6 text-white" />}

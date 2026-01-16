@@ -1,7 +1,43 @@
-import React from "react";
+// import React from "react";
 
-const MainLayout = async ({ children }) => {
-  return <div className="container mx-auto mt-20 mb-16">{children}</div>;
+// const MainLayout = async ({ children }) => {
+//   return <div className="container mx-auto mt-20 mb-16">{children}</div>;
+// };
+
+// export default MainLayout;
+
+import React, { Suspense } from "react";
+
+const MainLayout = ({ children }) => {
+  return (
+    <div className="container mx-auto mt-20 mb-16">
+      {/* Suspense creates a "boundary". If any component inside 'children' 
+         is slow (fetching data), this fallback shows ONLY inside this div 
+         instead of blocking the whole page.
+      */}
+      <Suspense fallback={<PageSkeleton />}>
+        {children}
+      </Suspense>
+    </div>
+  );
 };
 
 export default MainLayout;
+
+// --- OPTIMIZATION: Lightweight Skeleton for this specific layout ---
+function PageSkeleton() {
+  return (
+    <div className="w-full space-y-4 animate-pulse">
+      {/* Header imitation */}
+      <div className="h-8 w-1/3 bg-neutral-800/50 rounded-lg" />
+      <div className="h-4 w-2/3 bg-neutral-800/30 rounded-lg" />
+      
+      {/* Content imitation */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-64 rounded-xl bg-neutral-900/50 border border-white/5" />
+        ))}
+      </div>
+    </div>
+  );
+}

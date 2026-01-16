@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import { Suspense } from "react"; // ✅ Imported Suspense
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
@@ -34,11 +35,12 @@ export default function RootLayout({ children }) {
           >
             <Header />
             <main className="min-h-screen">
-
               <SmoothScroll>
-                {children}
+                {/* ✅ Added Suspense Wrapper with a professional Fallback */}
+                <Suspense fallback={<LoadingFallback />}>
+                  {children}
+                </Suspense>
               </SmoothScroll>
-
             </main>
             <Toaster richColors />
 
@@ -51,5 +53,17 @@ export default function RootLayout({ children }) {
         </body>
       </html>
     </ClerkProvider>
+  );
+}
+
+// ✅ Professional Loading Component (Matches your Dark Theme)
+function LoadingFallback() {
+  return (
+    <div className="flex items-center justify-center min-h-[60vh] w-full">
+      <div className="flex flex-col items-center gap-2">
+        <div className="w-8 h-8 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
+        <span className="text-sm text-muted-foreground animate-pulse">Loading...</span>
+      </div>
+    </div>
   );
 }

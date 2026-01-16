@@ -1,10 +1,11 @@
+// ai-interview-prep\ai-mock-interview\setup\page.jsx
 "use client";
 
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Plus, TrendingUp, Clock, Calendar, ArrowRight, BarChart3 } from "lucide-react";
 
-// Mock Data (Replace with real DB fetch later)
+// Mock Data
 const recentSessions = [
   { id: 1, role: "Full Stack Developer", date: "2 days ago", score: 85, type: "Technical" },
   { id: 2, role: "Product Manager", date: "5 days ago", score: 72, type: "Behavioral" },
@@ -15,7 +16,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-neutral-950 text-white selection:bg-indigo-500/30 p-6 md:p-10">
       <div className="max-w-7xl mx-auto space-y-12">
         
-        {/* --- HEADER & ACTION --- */}
+        {/* HEADER */}
         <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/5 pb-8">
           <div>
             <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-neutral-400">
@@ -24,7 +25,7 @@ export default function Dashboard() {
             <p className="text-neutral-400 mt-2">Track your progress and prepare for your next big role.</p>
           </div>
           
-          <Link href="/interview-prep/ai-mock-interview/setup">
+          <Link href="/ai-interview-prep/ai-mock-interview/setup">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -35,14 +36,14 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        {/* --- STATS OVERVIEW --- */}
+        {/* STATS */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <StatCard title="Avg. Score" value="78%" icon={<BarChart3 />} gradient="from-blue-500/20 to-cyan-500/20" />
           <StatCard title="Interviews Completed" value="12" icon={<Calendar />} gradient="from-purple-500/20 to-pink-500/20" />
           <StatCard title="Time Practiced" value="4h 30m" icon={<Clock />} gradient="from-emerald-500/20 to-teal-500/20" />
         </div>
 
-        {/* --- RECENT HISTORY --- */}
+        {/* RECENT HISTORY */}
         <div>
           <h2 className="text-xl font-bold text-white mb-6">Recent Sessions</h2>
           <div className="space-y-4">
@@ -58,9 +59,12 @@ export default function Dashboard() {
                   </div>
                 </div>
                 
-                <button className="mt-4 md:mt-0 px-6 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm font-medium transition-colors">
-                  View Analysis
-                </button>
+                {/* FIXED LINK HERE */}
+                <Link href={`/ai-interview-prep/ai-mock-interview/result/${session.id}`}>
+                    <button className="mt-4 md:mt-0 px-6 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm font-medium transition-colors">
+                    View Analysis
+                    </button>
+                </Link>
               </div>
             ))}
           </div>

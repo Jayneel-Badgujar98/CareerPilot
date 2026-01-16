@@ -1,27 +1,34 @@
-import { BrainCircuit, Briefcase, LineChart, ScrollText } from "lucide-react";
+import { BrainCircuit, FileText, LineChart, MessageSquare, ShieldCheck, Sparkles } from "lucide-react";
 
 export const features = [
   {
-    icon: <BrainCircuit className="w-10 h-10 mb-4 text-primary" />,
-    title: "AI-Powered Career Guidance",
-    description:
-      "Get personalized career advice and insights powered by advanced AI technology.",
+    icon: <BrainCircuit className="w-8 h-8 text-indigo-400" />,
+    title: "AI Mock Interviews",
+    description: "Experience real-time voice simulations with our AI interviewer. Get instant feedback on your tone, pacing, and answer quality."
   },
   {
-    icon: <Briefcase className="w-10 h-10 mb-4 text-primary" />,
-    title: "Interview Preparation",
-    description:
-      "Practice with role-specific questions and get instant feedback to improve your performance.",
+    icon: <FileText className="w-8 h-8 text-blue-400" />,
+    title: "Intelligent Resume Builder",
+    description: "Build ATS-optimized resumes from scratch. Edit anytime and let our AI refine your bullet points for maximum impact."
   },
   {
-    icon: <LineChart className="w-10 h-10 mb-4 text-primary" />,
-    title: "Industry Insights",
-    description:
-      "Stay ahead with real-time industry trends, salary data, and market analysis.",
+    icon: <LineChart className="w-8 h-8 text-emerald-400" />,
+    title: "Performance Analytics",
+    description: "Track your growth over time. View detailed reports on your interview scores, resume strength, and skill gaps."
   },
   {
-    icon: <ScrollText className="w-10 h-10 mb-4 text-primary" />,
-    title: "Smart Resume Creation",
-    description: "Generate ATS-optimized resumes with AI assistance.",
+    icon: <MessageSquare className="w-8 h-8 text-pink-400" />,
+    title: "AI Cover Letters",
+    description: "Generate tailored cover letters in seconds that align perfectly with your resume and the specific job description."
   },
+  {
+    icon: <ShieldCheck className="w-8 h-8 text-orange-400" />,
+    title: "ATS Resume Scanner",
+    description: "Scan your resume against major ATS algorithms to ensure you never get rejected by a bot before a human sees you."
+  },
+  {
+    icon: <Sparkles className="w-8 h-8 text-purple-400" />,
+    title: "Smart Refiner",
+    description: "One-click enhancements for your resume. Fix grammar, improve formatting, and use power verbs automatically."
+  }
 ];

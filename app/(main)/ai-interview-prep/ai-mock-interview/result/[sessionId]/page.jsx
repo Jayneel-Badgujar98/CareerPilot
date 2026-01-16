@@ -97,14 +97,14 @@ export default function InterviewResultPage() {
               <Download className="w-4 h-4" /> Download Transcript
            </button>
            
-           <Link href="/interview-prep">
+           <Link href="/interview-prep/ai-mock-interview">
              <button className="w-full md:w-auto px-8 py-3 rounded-xl bg-white text-black font-bold hover:bg-neutral-200 flex items-center justify-center gap-2 transition-colors shadow-lg shadow-white/10">
                 Back to Dashboard <ArrowRight className="w-4 h-4" />
              </button>
            </Link>
         </div>
-
       </div>
     </div>
   );
 }
+

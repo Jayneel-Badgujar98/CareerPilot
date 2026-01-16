@@ -71,21 +71,21 @@ export default async function Header() {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="end" className="w-72 p-3 shadow-2xl border-indigo-100/20 bg-background/95 backdrop-blur-xl rounded-xl">
-                
+
                 {/* Career Prep Section */}
                 <div className="px-3 py-2 text-xs font-bold text-muted-foreground/70 uppercase tracking-widest">
                   Career Prep
                 </div>
 
                 <DropdownMenuItem asChild className="p-0 mb-1 focus:bg-transparent">
-                  <Link href="/interview-prep" className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/50 group transition-all duration-200 cursor-pointer">
+                  <Link href="/ai-interview-prep" className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/50 group transition-all duration-200 cursor-pointer">
                     {/* Icon Box */}
                     <div className="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:shadow-orange-200">
                       <GraduationCap className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
                     </div>
                     {/* Text */}
                     <div className="flex-1">
-                      <div className="font-semibold text-foreground group-hover:text-orange-600 transition-colors">Interview Prep</div>
+                      <div className="font-semibold text-foreground group-hover:text-orange-600 transition-colors">AI Interview Prep</div>
                       <p className="text-xs text-muted-foreground">Mock interviews with AI</p>
                     </div>
                   </Link>
@@ -97,14 +97,14 @@ export default async function Header() {
                       <FileSearch className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
                     </div>
                     <div className="flex-1">
-                      <div className="font-semibold text-foreground group-hover:text-purple-600 transition-colors">Analyze Resume</div>
+                      <div className="font-semibold text-foreground group-hover:text-purple-600 transition-colors">AI Resume Analysis</div>
                       <p className="text-xs text-muted-foreground">Get AI scoring & Refinement</p>
                     </div>
                   </Link>
                 </DropdownMenuItem>
 
 
-                
+
                 {/* Resume Section */}
                 <div className="px-3 py-2 mt-2 border-t border-border/50 text-xs font-bold text-muted-foreground/70 uppercase tracking-widest">
                   Resume Mastery
@@ -116,7 +116,7 @@ export default async function Header() {
                       <FileText className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
                     </div>
                     <div className="flex-1">
-                      <div className="font-semibold text-foreground group-hover:text-blue-600 transition-colors">Build Resume</div>
+                      <div className="font-semibold text-foreground group-hover:text-blue-600 transition-colors">AI Build Resume</div>
                       <p className="text-xs text-muted-foreground">Create an ATS-friendly resume</p>
                     </div>
                   </Link>
@@ -128,14 +128,12 @@ export default async function Header() {
                       <PenBox className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
                     </div>
                     <div className="flex-1">
-                      <div className="font-semibold text-foreground group-hover:text-emerald-600 transition-colors">Cover Letter</div>
+                      <div className="font-semibold text-foreground group-hover:text-emerald-600 transition-colors">AI Cover Letter</div>
                       <p className="text-xs text-muted-foreground">Generate tailored letters</p>
                     </div>
                   </Link>
                 </DropdownMenuItem>
 
-
-                
               </DropdownMenuContent>
             </DropdownMenu>
           </SignedIn>
