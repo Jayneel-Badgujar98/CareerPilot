@@ -1,5 +1,6 @@
 import { BarLoader } from "react-spinners";
 import { Suspense } from "react";
+import BackButton from "@/components/backButton";
 
 export default function Layout({ children }) {
   return (
@@ -10,6 +11,7 @@ export default function Layout({ children }) {
       <Suspense
         fallback={<BarLoader className="mt-4" width={"100%"} color="gray" />}
       >
+        {/* <BackButton /> */}
         {children}
       </Suspense>
     </div>

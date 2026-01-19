@@ -23,7 +23,7 @@ export default function BackButton({ className, variant = "outline" }) {
         p-0             /* Remove padding to center icon */
         
         /* --- DESKTOP STYLES (Medium screens & up) --- */
-        md:top-20 md:left-12
+        md:top-0
         md:h-auto md:w-auto   /* Auto width for text */
         md:px-5 md:py-2.5     /* Comfy padding */
         md:gap-2              /* Space between icon and text */

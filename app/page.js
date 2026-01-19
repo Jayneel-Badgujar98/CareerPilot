@@ -33,7 +33,7 @@ export default function LandingPage() {
       {/* Features Section */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-bold tracking-tighter text-center mb-12">
+          <h2 className="text-4xl font-bold tracking-tighter text-center mb-12">
             Powerful Features for Your Career Growth
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
@@ -85,7 +85,7 @@ export default function LandingPage() {
       <section className="w-full py-12 md:py-24 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-3xl font-bold mb-4">How It Works</h2>
+            <h2 className="text-4xl font-bold mb-4">How It Works</h2>
             <p className="text-muted-foreground">
               Four simple steps to accelerate your career growth
             </p>
@@ -110,7 +110,7 @@ export default function LandingPage() {
 
       <section className="w-full py-12 md:py-24 bg-muted/50">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-bold text-center mb-12">
+          <h2 className="text-4xl font-bold text-center mb-12">
             What Our Users Say
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -161,7 +161,7 @@ export default function LandingPage() {
       <section className="w-full py-12 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-3xl font-bold mb-4">
+            <h2 className="text-4xl font-bold mb-4">
               Frequently Asked Questions
             </h2>
             <p className="text-muted-foreground">
@@ -169,14 +169,14 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger className="text-left">
+                  <AccordionTrigger className="text-left text-xl">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent>{faq.answer}</AccordionContent>
+                  <AccordionContent className="text-md">{faq.answer}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>

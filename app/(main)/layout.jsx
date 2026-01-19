@@ -1,21 +1,15 @@
-// import React from "react";
-
-// const MainLayout = async ({ children }) => {
-//   return <div className="container mx-auto mt-20 mb-16">{children}</div>;
-// };
-
-// export default MainLayout;
-
 import React, { Suspense } from "react";
+import BackButton from "@/components/backButton"
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="container mx-auto mt-20 mb-16">
+    <div className="relative container mx-auto mt-20 mb-16">
       {/* Suspense creates a "boundary". If any component inside 'children' 
          is slow (fetching data), this fallback shows ONLY inside this div 
          instead of blocking the whole page.
       */}
       <Suspense fallback={<PageSkeleton />}>
+        {/* <BackButton /> */}
         {children}
       </Suspense>
     </div>

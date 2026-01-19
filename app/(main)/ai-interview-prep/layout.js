@@ -1,5 +1,6 @@
 // app/interview-prep/layout.js
 import { Suspense } from 'react';
+import BackButton from "@/components/backButton"
 
 export default function InterviewLayout({ children }) {
   return (
@@ -7,6 +8,7 @@ export default function InterviewLayout({ children }) {
     // Added 'relative': Ensures proper stacking context
     <div className="min-h-screen bg-black text-white flex flex-col relative">
       
+
       {/* Background Gradient Mesh - Fixed to viewport */}
       {/* <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full blur-[120px]" />
@@ -18,6 +20,7 @@ export default function InterviewLayout({ children }) {
       {/* Main Content */}
       <div className=" flex-grow w-full">
         <Suspense fallback={<LoadingSkeleton />}>
+        <BackButton />
           {children}
         </Suspense>
       </div>
