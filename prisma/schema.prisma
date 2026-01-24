@@ -13,110 +13,120 @@ datasource db {
 }
 
 model User {
-  id                String   @id @default(auto()) @map("_id") @db.ObjectId
-  clerkUserId       String   @unique
-  email             String   @unique
-  name              String?
-  imageUrl          String?
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  clerkUserId   String    @unique
+  email         String    @unique
+  name          String?
+  imageUrl      String?
+  bio           String?
+  experience    Int?
+  skills        String[]
 
-  bio               String?
-  experience        Int?
-  skills            String[]
-
-  
-  industryInsightId String?  @db.ObjectId
+  // Relation to IndustryInsight
+  industryInsightId String?       @db.ObjectId
   industryInsight   IndustryInsight? @relation(fields: [industryInsightId], references: [id])
 
-  assessments       Assessment[]
-  mockInterviews    MockInterview[]
-  resume            Resume?
-  coverLetter       CoverLetter[]
+  // Relations
+  assessments    Assessment[]
+  mockInterviews InterviewSession[]
+  resume         Resume?
+  coverLetter    CoverLetter[]
 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Assessment {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String
-  user          User      @relation(fields: [userId], references: [id])
-  quizScore     Float
-  questions     Json[]
-  category      String
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // FIX: Added @db.ObjectId
+  userId         String   @db.ObjectId 
+  user           User     @relation(fields: [userId], references: [id])
+  
+  quizScore      Float
+  questions      Json[]
+  category       String
   improvementTip String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   @@index([userId])
 }
 
 model Resume {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String    @unique
-  user        User      @relation(fields: [userId], references: [id])
-  content     String   // ✅ removed @db.Text
-  atsScore    Float?
-  feedback    String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // FIX: Added @db.ObjectId
+  userId    String   @unique @db.ObjectId 
+  user      User     @relation(fields: [userId], references: [id])
+  
+  content   String 
+  atsScore  Float?
+  feedback  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model CoverLetter {
-  id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String
-  user            User      @relation(fields: [userId], references: [id])
-  content         String
-  jobDescription  String?
-  companyName     String
-  jobTitle        String
-  status          String    @default("draft")
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // FIX: Added @db.ObjectId
+  userId         String   @db.ObjectId 
+  user           User     @relation(fields: [userId], references: [id])
+  
+  content        String
+  jobDescription String?
+  companyName    String
+  jobTitle       String
+  status         String   @default("draft")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   @@index([userId])
 }
 
 model IndustryInsight {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  industry      String    @unique
-
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  industry      String   @unique
+  
+  // Bi-directional relation to User
   users         User[]
 
   salaryRanges  Json[]
   growthRate    Float
   demandLevel   String
   topSkills     String[]
-
   marketOutlook String
   keyTrends     String[]
   recommendedSkills String[]
 
-  lastUpdated   DateTime  @default(now())
+  lastUpdated   DateTime @default(now())
   nextUpdate    DateTime
 }
 
-// prisma/schema.prisma
-
-model MockInterview {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
+model InterviewSession {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
   
-  // Job Details
-  jobRole     String
-  jobDescription String? // The JD they pasted
-  companyName String?
+  // FIX: Added @db.ObjectId
+  userId         String   @db.ObjectId 
+  user           User     @relation(fields: [userId], references: [id])
   
-  // Settings
-  interviewType String // HR, Technical, Behavioral
-  difficulty    String // Easy, Medium, Hard
-  duration      Int    // 15, 30, 45, or custom
+  date           DateTime @default(now())
+  jobRole        String?
+  companyName    String?
+  techStack      String?
+  focus          String?    
+  difficulty     String?    
+  personality    String?    
+  
+  duration       Int?      // Planned duration (e.g., 15 mins)
+  actualDuration Int?      @default(0) // Actual time spent
+  
+  jobDescription String?
+  config         Json
+  transcript     Json
+  analysis       Json?
 
-  // Results
-  score       Int?
-  feedback    Json?    // The full AI debrief JSON
-  status      String   @default("completed") // completed, partial
-  createdAt   DateTime @default(now())
-
-  @@index([userId])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
