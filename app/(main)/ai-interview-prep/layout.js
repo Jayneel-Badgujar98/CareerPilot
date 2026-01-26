@@ -18,9 +18,9 @@ export default function InterviewLayout({ children }) {
       </div> */}
 
       {/* Main Content */}
-      <div className=" flex-grow w-full">
+      <div className="flex-grow w-full">
         <Suspense fallback={<LoadingSkeleton />}>
-        <BackButton />
+        {/* <BackButton /> */}
           {children}
         </Suspense>
       </div>

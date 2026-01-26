@@ -815,11 +815,11 @@ export default function ResultPage() {
 
                 {/* 7. FOOTER ACTIONS */}
                 <footer className="flex flex-col sm:flex-row justify-center items-center gap-4 py-8 border-t border-white/5">
-                    <button onClick={() => router.push('/')} className="px-6 py-3 text-slate-500 hover:text-white text-xs font-bold uppercase tracking-widest transition-all flex items-center gap-2">
+                    <button onClick={() => router.push('/ai-interview-prep/ai-mock-interview')} className="px-6 py-3 text-slate-500 hover:text-white text-xs font-bold uppercase tracking-widest transition-all flex items-center gap-2">
                         <LayoutDashboard size={14} /> Dashboard
                     </button>
-                    <button onClick={() => router.push('/ai-mock-interview')} className="bg-white hover:bg-slate-200 text-black px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center gap-2 active:scale-95">
-                        <RotateCcw size={14} strokeWidth={2.5} /> New Session
+                    <button onClick={() => router.push('/ai-interview-prep/ai-mock-interview/setup')} className="bg-white hover:bg-slate-200 text-black px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center gap-2 active:scale-95">
+                        <RotateCcw size={14} strokeWidth={2.5} /> Practice Again
                     </button>
                 </footer>
             </div>

@@ -1,8 +1,9 @@
 // app/actions/interview.js
 'use server';
 
-import {db} from '@/lib/prisma';
+import { db } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { checkUser } from "@/lib/checkUser";
 
 /**
  * Creates a new interview session.
@@ -10,8 +11,12 @@ import { revalidatePath } from 'next/cache';
  */
 export async function createSession(data) {
     try {
+        const user = await checkUser();
+        if (!user) throw new Error("User not found");
+
         const session = await db.interviewSession.create({
             data: {
+                userId: user.id,
                 date: new Date(),
                 // Top-level fields for fast Dashboard access
                 jobRole: data.jobRole,
@@ -71,7 +76,8 @@ export async function updateSessionAnalysis(id, analysis) {
             data: { analysis },
         });
         // Refresh the dashboard and result page cache
-        revalidatePath(`/ai-mock-interview/result/${id}`);
+        revalidatePath(`/ai-interview-prep/ai-mock-interview/result/${id}`);
+        revalidatePath('/ai-interview-prep/ai-mock-interview');
         revalidatePath('/');
         return true;
     } catch (error) {
@@ -104,7 +110,13 @@ export async function updateSessionTranscript(id, transcript, timeSpentMinutes) 
 
 export async function getUserInterviews() {
     try {
+        const user = await checkUser();
+        if (!user) return [];
+
         const interviews = await db.interviewSession.findMany({
+            where: {
+                userId: user.id
+            },
             orderBy: { date: 'desc' },
             select: {
                 id: true,

@@ -3,13 +3,13 @@ import BackButton from "@/components/backButton"
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="relative container mx-auto mt-20 mb-16">
+    <div className="mt-20 container mx-auto mb-16">
       {/* Suspense creates a "boundary". If any component inside 'children' 
          is slow (fetching data), this fallback shows ONLY inside this div 
          instead of blocking the whole page.
       */}
       <Suspense fallback={<PageSkeleton />}>
-        {/* <BackButton /> */}
+        <BackButton />
         {children}
       </Suspense>
     </div>

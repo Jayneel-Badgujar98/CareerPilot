@@ -7,6 +7,7 @@ import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { dark } from "@clerk/themes";
 import SmoothScroll from "@/components/SmoothScroll";
+import BackButton from "@/components/backButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +35,7 @@ export default function RootLayout({ children }) {
             disableTransitionOnChange
           >
             <Header />
-            <main className="min-h-screen">
+            <main className="min-h-screen ">
               <SmoothScroll>
                 {/* ✅ Added Suspense Wrapper with a professional Fallback */}
                 <Suspense fallback={<LoadingFallback />}>

@@ -9,7 +9,6 @@ export default function AnalyzeResume({ children }) {
       
       <div className=" flex-grow w-full">
         <Suspense fallback={<LoadingSkeleton />}>
-        <BackButton />
           {children}
         </Suspense>
       </div>

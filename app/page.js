@@ -26,7 +26,6 @@ export default function LandingPage() {
   return (
     <>
 
-
       {/* Hero Section */}
       <HeroSection />
 

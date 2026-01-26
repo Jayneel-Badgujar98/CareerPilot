@@ -68,12 +68,12 @@ export default function DashboardClient({ sessions = [] }) {
                 {/* HEADER */}
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 border-b border-white/5 pb-8">
                     <div className="space-y-2">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                            {/* <Activity size={12} className="text-emerald-400" /> */}
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">CareerPilot Advanced AI is Active</span>
-                        </div>
-                        <h1 className="text-4xl font-extrabold tracking-tight text-white">
-                            Mock Interviews <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-500">Analytics</span>
+                        {/* <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20"> */}
+                        {/* <Activity size={12} className="text-emerald-400" /> */}
+                        {/* <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">CareerPilot Advanced AI is Active</span> */}
+                        {/* </div> */}
+                        <h1 className="text-5xl font-extrabold tracking-tight text-white">
+                            AI Mock Interview <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-500">Analytics</span>
                         </h1>
                         <p className="text-slate-400 text-sm max-w-md">
                             Tracking your biometric performance and technical growth over time.
@@ -164,7 +164,7 @@ export default function DashboardClient({ sessions = [] }) {
                                     <PlayCircle size={32} className="text-slate-600" />
                                 </div>
                                 <p className="text-slate-500 font-medium">No simulation data available yet.</p>
-                                <button onClick={() => router.push('/ai-mock-interview')} className="text-indigo-400 text-sm hover:underline">Start your first session</button>
+                                <button onClick={() => router.push('/ai-interview-prep/ai-mock-interview')} className="text-indigo-400 text-sm hover:underline">Start your first session</button>
                             </div>
                         ) : (
                             sessions.map((s) => <SessionRow key={s.id} session={s} router={router} />)
@@ -218,14 +218,14 @@ function SessionRow({ session, router }) {
 
     return (
         <div
-            onClick={() => router.push(`/ai-mock-interview/result/${session.id}`)}
+            onClick={() => router.push(`/ai-interview-prep/ai-mock-interview/result/${session.id}`)}
             className="group cursor-pointer bg-[#0A0A0B] border border-white/5 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-6 hover:bg-[#0E0E0F] hover:border-indigo-500/30 transition-all"
         >
             <div className="flex items-center gap-6 w-full">
                 {/* Score Badge */}
                 <div className={`h-14 w-14 rounded-xl flex flex-col items-center justify-center shrink-0 border transition-colors ${session.analysis
-                        ? (isHigh ? 'border-emerald-500/20 bg-emerald-500/5 text-emerald-400' : 'border-amber-500/20 bg-amber-500/5 text-amber-400')
-                        : 'border-white/5 bg-white/5 text-slate-600'
+                    ? (isHigh ? 'border-emerald-500/20 bg-emerald-500/5 text-emerald-400' : 'border-amber-500/20 bg-amber-500/5 text-amber-400')
+                    : 'border-white/5 bg-white/5 text-slate-600'
                     }`}>
                     <span className="text-lg font-bold">{session.analysis ? score : '-'}</span>
                 </div>

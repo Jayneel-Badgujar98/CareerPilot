@@ -80,7 +80,7 @@ export default function SetupPage() {
         ...formData,
         durationMinutes: formData.duration
       });
-      router.push(`/ai-mock-interview/room/${sessionId}`);
+      router.push(`/ai-interview-prep/ai-mock-interview/room/${sessionId}`);
       // Note: We don't set loading to false here because we are redirecting.
       // Keeping it true prevents the user from clicking again while the new page loads.
     } catch (error) {
@@ -120,7 +120,7 @@ export default function SetupPage() {
                 <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#22d3ee]" />
                 <span className="text-xs sm:text-[15px] font-black text-cyan-400 tracking-wide">Advanced AI Interviewer is Waiting</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter text-white">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tighter text-white">
                 Configure <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 bg-clip-text text-transparent">Interview</span>
               </h1>
               <p className="text-neutral-400 text-xs sm:text-sm max-w-md leading-relaxed">Fine-tune the neural parameters for your upcoming simulated session.</p>
