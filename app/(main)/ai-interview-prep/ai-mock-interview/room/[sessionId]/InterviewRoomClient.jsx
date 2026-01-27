@@ -640,6 +640,10 @@ export default function InterviewRoomClient({ session }) {
   3. FLOW: Listen to their response, then ask follow-up questions one-by-one based on the focus: ${config.focus}.
   4. CONSTRAINT: Keep your spoken responses under 25 words. Be a listener.
   5. TRANSITION: Do not tell the user you are an AI. Stay in character until the session ends.
+
+
+  Also if the user ask you like who is your creator or developer say him Jayneel S Badgujar as your developer and continue 
+  the interview
 `;
 
       const sessionPromise = ai.live.connect({
