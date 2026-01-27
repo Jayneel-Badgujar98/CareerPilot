@@ -501,16 +501,18 @@
 // }
 
 
+
+// app/ai-mock-interview/room/[sessionId]/InterviewRoomClient.jsx
 // app/ai-mock-interview/room/[sessionId]/InterviewRoomClient.jsx
 
 'use client';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { GoogleGenAI, Modality } from '@google/genai';
 import { Mic, MicOff, PhoneOff, Sparkles, User, Volume2, History, X, Menu, Clock, Signal } from 'lucide-react';
 import { updateSessionTranscript } from '@/actions/mockInterview';
 
-// ... (Keep your audio helper functions: decode, decodeAudioData, createBlob exactly as they are) ...
+// --- Audio Helper Functions ---
 const decode = (base64) => {
   const binaryString = atob(base64);
   const len = binaryString.length;
@@ -648,7 +650,7 @@ export default function InterviewRoomClient({ session }) {
             voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Zephyr' } }
           },
           systemInstruction,
-          outputAudioTranscription: {},
+          outputAudioTranscription: {}, // Keep request, handle UI smartly
           inputAudioTranscription: {},
         },
         callbacks: {
@@ -685,12 +687,14 @@ export default function InterviewRoomClient({ session }) {
             }, 1000);
           },
           onmessage: async (message) => {
+            // 1. Handle Audio IMMEDIATELY (Priority)
             const audioData = message.serverContent?.modelTurn?.parts?.[0]?.inlineData?.data;
             if (audioData && outputAudioContextRef.current?.state !== 'closed') {
+              // Set state but don't let it block execution
               setIsAISpeaking(true);
-
+              
               const outputContext = outputAudioContextRef.current;
-              const nextStart = Math.max(nextStartTimeRef.current, outputContext.currentTime + 0.1);
+              const nextStart = Math.max(nextStartTimeRef.current, outputContext.currentTime + 0.05); // Reduced buffer slightly
 
               try {
                 const buffer = await decodeAudioData(decode(audioData), outputContext, 24000, 1);
@@ -716,6 +720,7 @@ export default function InterviewRoomClient({ session }) {
 
             if (message.serverContent?.interrupted) stopAllAudio();
 
+            // 2. Handle Text (Second Priority)
             if (message.serverContent?.outputTranscription) {
               const text = message.serverContent.outputTranscription.text;
               currentOutputRef.current += text;
@@ -767,7 +772,7 @@ export default function InterviewRoomClient({ session }) {
     setIsEnding(true);
     setCurrentSubtitle("Finalizing your evaluation...");
 
-    cleanup(); // Stop audio immediately
+    cleanup();
 
     const totalDurationSeconds = config.durationMinutes * 60;
     const timeSpentSeconds = totalDurationSeconds - timeLeft;
@@ -801,31 +806,107 @@ export default function InterviewRoomClient({ session }) {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // --- MEMOIZED UI COMPONENTS (To prevent lag) ---
+  
+  // 1. Header Component (Only updates on timeLeft changes)
+  const Header = useMemo(() => (
+    <header className="h-14 md:h-16 border-b border-white/5 flex items-center justify-between px-4 md:px-6 bg-black/20 backdrop-blur-xl z-30 shrink-0">
+      <div className="flex items-center gap-3 md:gap-4">
+        <div className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-500 ${isActive ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.6)]' : 'bg-amber-500 shadow-[0_0_12px_rgba(245,158,11,0.4)]'}`} />
+        <div className="flex flex-col">
+          <span className="font-semibold text-sm md:text-base text-slate-200 tracking-tight">{config.jobRole}</span>
+          <span className="text-[10px] md:text-xs text-slate-500 font-medium uppercase tracking-wider">{config.companyName || "AI Interview"} &bull; {config.difficulty}</span>
+        </div>
+      </div>
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg border border-white/5 text-xs md:text-sm font-mono text-slate-300 shadow-inner">
+          <Clock size={14} className="text-indigo-400" />
+          {formatTime(timeLeft)}
+        </div>
+        <button onClick={() => setShowTranscript(prev => !prev)} className="lg:hidden p-2 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
+          <Menu size={18} />
+        </button>
+      </div>
+    </header>
+  ), [timeLeft, isActive, config, formatTime]);
+
+  // 2. Visualizer Component (Updates only on speaking state, ignores subtitle text updates)
+  const Visualizer = useMemo(() => (
+    <div className="flex-1 w-full max-w-7xl mx-auto p-4 lg:p-6 flex flex-col md:flex-row gap-4 md:gap-6 items-center justify-center overflow-y-auto md:overflow-hidden">
+      {/* AI Avatar Card */}
+      <div className="relative w-full md:flex-1 h-full min-h-[250px] md:min-h-0 bg-white/[0.02] rounded-2xl border border-white/5 flex flex-col items-center justify-center overflow-hidden shadow-2xl backdrop-blur-sm group will-change-transform">
+        <div className={`absolute inset-0 transition-opacity duration-700 ${isAISpeaking ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="absolute inset-0 bg-gradient-to-t from-indigo-500/10 via-transparent to-transparent"></div>
+        </div>
+        
+        {/* Animated Background Mesh */}
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-900/40 via-transparent to-transparent" />
+
+        <div className={`
+          relative w-28 h-28 lg:w-40 lg:h-40 rounded-full flex items-center justify-center bg-black/60 backdrop-blur-md
+          transition-all duration-500 border-2
+          ${isAISpeaking ? 'border-indigo-500 shadow-[0_0_40px_rgba(99,102,241,0.4)] scale-105' : 'border-white/5 scale-100'}
+        `}>
+          <Sparkles size={40} className={`text-indigo-400 transition-all duration-300 ${isAISpeaking ? 'animate-pulse scale-110' : 'opacity-50 grayscale'}`} />
+          
+          {/* Orbital Rings */}
+          {isAISpeaking && (
+             <>
+              <div className="absolute inset-0 rounded-full border border-indigo-500/30 animate-[ping_3s_linear_infinite]" />
+              <div className="absolute inset-0 rounded-full border border-indigo-500/20 animate-[ping_3s_linear_infinite_1.5s]" />
+             </>
+          )}
+        </div>
+
+        <div className="absolute bottom-4 left-4 flex items-center gap-2">
+          <div className="bg-neutral-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-bold text-indigo-300 border border-indigo-500/20 tracking-wider shadow-lg flex items-center gap-2">
+            <div className={`w-1.5 h-1.5 rounded-full ${isAISpeaking ? 'bg-indigo-400' : 'bg-slate-600'}`}></div>
+            AI RECRUITER
+          </div>
+          {isAISpeaking && <Signal size={14} className="text-indigo-400 animate-pulse" />}
+        </div>
+      </div>
+
+      {/* User Avatar Card */}
+      <div className="relative w-full md:flex-1 h-full min-h-[250px] md:min-h-0 bg-white/[0.02] rounded-2xl border border-white/5 flex flex-col items-center justify-center overflow-hidden shadow-2xl backdrop-blur-sm group will-change-transform">
+         <div className={`absolute inset-0 transition-opacity duration-700 ${isUserSpeaking ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/10 via-transparent to-transparent"></div>
+        </div>
+
+        {/* Animated Background Mesh */}
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-emerald-900/40 via-transparent to-transparent" />
+
+        <div className={`
+          relative w-28 h-28 lg:w-40 lg:h-40 rounded-full flex items-center justify-center bg-black/60 backdrop-blur-md
+          transition-all duration-300 border-2
+          ${isUserSpeaking ? 'border-emerald-500 shadow-[0_0_40px_rgba(16,185,129,0.4)] scale-105' : 'border-white/5 scale-100'}
+        `}>
+          <User size={40} className={`text-emerald-500/90 transition-all duration-300 ${isUserSpeaking ? 'scale-110' : 'opacity-50 grayscale'}`} />
+           {isUserSpeaking && (
+             <>
+              <div className="absolute inset-0 rounded-full border border-emerald-500/30 animate-[ping_3s_linear_infinite]" />
+              <div className="absolute inset-0 rounded-full border border-emerald-500/20 animate-[ping_3s_linear_infinite_1.5s]" />
+             </>
+          )}
+        </div>
+
+        <div className="absolute bottom-4 left-4 flex items-center gap-2">
+          <div className="bg-neutral-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-bold text-emerald-300 border border-emerald-500/20 tracking-wider shadow-lg flex items-center gap-2">
+            <div className={`w-1.5 h-1.5 rounded-full ${isUserSpeaking ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
+            YOU
+          </div>
+          {isMicMuted ? <MicOff size={14} className="text-red-400" /> : (isUserSpeaking && <Signal size={14} className="text-emerald-400 animate-pulse" />)}
+        </div>
+      </div>
+    </div>
+  ), [isAISpeaking, isUserSpeaking, isMicMuted]);
+
   if (!config) return <div className="h-dvh bg-black flex items-center justify-center text-neutral-500 text-sm">Loading Config...</div>;
 
   return (
-    // Changed h-screen to h-dvh for mobile browsers, added radial gradient background
     <div className="h-dvh bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-neutral-900 via-[#050505] to-neutral-950 flex flex-col font-sans text-slate-200 overflow-hidden selection:bg-indigo-500/30">
 
-      {/* Header - Made slightly more compact and glass-like */}
-      <header className="h-14 md:h-16 border-b border-white/5 flex items-center justify-between px-4 md:px-6 bg-black/20 backdrop-blur-xl z-30 shrink-0">
-        <div className="flex items-center gap-3 md:gap-4">
-          <div className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-500 ${isActive ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.6)]' : 'bg-amber-500 shadow-[0_0_12px_rgba(245,158,11,0.4)]'}`} />
-          <div className="flex flex-col">
-            <span className="font-semibold text-sm md:text-base text-slate-200 tracking-tight">{config.jobRole}</span>
-            <span className="text-[10px] md:text-xs text-slate-500 font-medium uppercase tracking-wider">{config.companyName || "AI Interview"} &bull; {config.difficulty}</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg border border-white/5 text-xs md:text-sm font-mono text-slate-300 shadow-inner">
-            <Clock size={14} className="text-indigo-400" />
-            {formatTime(timeLeft)}
-          </div>
-          <button onClick={() => setShowTranscript(!showTranscript)} className="lg:hidden p-2 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
-            <Menu size={18} />
-          </button>
-        </div>
-      </header>
+      {Header}
 
       <div className="flex-1 flex overflow-hidden relative">
 
@@ -866,77 +947,9 @@ export default function InterviewRoomClient({ session }) {
             </div>
           )}
 
-          {/* Visualizer Area - Responsive Grid */}
-          <div className="flex-1 w-full max-w-7xl mx-auto p-4 lg:p-6 flex flex-col md:flex-row gap-4 md:gap-6 items-center justify-center overflow-y-auto md:overflow-hidden">
+          {Visualizer}
 
-            {/* AI Avatar Card */}
-            <div className="relative w-full md:flex-1 h-full min-h-[250px] md:min-h-0 bg-white/[0.02] rounded-2xl border border-white/5 flex flex-col items-center justify-center overflow-hidden shadow-2xl backdrop-blur-sm group">
-              <div className={`absolute inset-0 transition-opacity duration-700 ${isAISpeaking ? 'opacity-100' : 'opacity-0'}`}>
-                <div className="absolute inset-0 bg-gradient-to-t from-indigo-500/10 via-transparent to-transparent"></div>
-              </div>
-              
-              {/* Animated Background Mesh */}
-              <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-900/40 via-transparent to-transparent" />
-
-              <div className={`
-                relative w-28 h-28 lg:w-40 lg:h-40 rounded-full flex items-center justify-center bg-black/60 backdrop-blur-md
-                transition-all duration-500 border-2
-                ${isAISpeaking ? 'border-indigo-500 shadow-[0_0_40px_rgba(99,102,241,0.4)] scale-105' : 'border-white/5 scale-100'}
-              `}>
-                <Sparkles size={40} className={`text-indigo-400 transition-all duration-300 ${isAISpeaking ? 'animate-pulse scale-110' : 'opacity-50 grayscale'}`} />
-                
-                {/* Orbital Rings */}
-                {isAISpeaking && (
-                   <>
-                    <div className="absolute inset-0 rounded-full border border-indigo-500/30 animate-[ping_3s_linear_infinite]" />
-                    <div className="absolute inset-0 rounded-full border border-indigo-500/20 animate-[ping_3s_linear_infinite_1.5s]" />
-                   </>
-                )}
-              </div>
-
-              <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                <div className="bg-neutral-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-bold text-indigo-300 border border-indigo-500/20 tracking-wider shadow-lg flex items-center gap-2">
-                  <div className={`w-1.5 h-1.5 rounded-full ${isAISpeaking ? 'bg-indigo-400' : 'bg-slate-600'}`}></div>
-                  AI RECRUITER
-                </div>
-                {isAISpeaking && <Signal size={14} className="text-indigo-400 animate-pulse" />}
-              </div>
-            </div>
-
-            {/* User Avatar Card */}
-            <div className="relative w-full md:flex-1 h-full min-h-[250px] md:min-h-0 bg-white/[0.02] rounded-2xl border border-white/5 flex flex-col items-center justify-center overflow-hidden shadow-2xl backdrop-blur-sm group">
-               <div className={`absolute inset-0 transition-opacity duration-700 ${isUserSpeaking ? 'opacity-100' : 'opacity-0'}`}>
-                <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/10 via-transparent to-transparent"></div>
-              </div>
-
-              {/* Animated Background Mesh */}
-              <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-emerald-900/40 via-transparent to-transparent" />
-
-              <div className={`
-                relative w-28 h-28 lg:w-40 lg:h-40 rounded-full flex items-center justify-center bg-black/60 backdrop-blur-md
-                transition-all duration-300 border-2
-                ${isUserSpeaking ? 'border-emerald-500 shadow-[0_0_40px_rgba(16,185,129,0.4)] scale-105' : 'border-white/5 scale-100'}
-              `}>
-                <User size={40} className={`text-emerald-500/90 transition-all duration-300 ${isUserSpeaking ? 'scale-110' : 'opacity-50 grayscale'}`} />
-                 {isUserSpeaking && (
-                   <>
-                    <div className="absolute inset-0 rounded-full border border-emerald-500/30 animate-[ping_3s_linear_infinite]" />
-                    <div className="absolute inset-0 rounded-full border border-emerald-500/20 animate-[ping_3s_linear_infinite_1.5s]" />
-                   </>
-                )}
-              </div>
-
-              <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                <div className="bg-neutral-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-bold text-emerald-300 border border-emerald-500/20 tracking-wider shadow-lg flex items-center gap-2">
-                  <div className={`w-1.5 h-1.5 rounded-full ${isUserSpeaking ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
-                  YOU
-                </div>
-                {isMicMuted ? <MicOff size={14} className="text-red-400" /> : (isUserSpeaking && <Signal size={14} className="text-emerald-400 animate-pulse" />)}
-              </div>
-            </div>
-          </div>
-
-          {/* Subtitles Area - Moved from fixed position to Flexbox flow for responsiveness */}
+          {/* Subtitles Area - Separated from Visualizer to avoid re-rendering heavy graphics on text update */}
           <div className="w-full px-6 min-h-[80px] flex items-center justify-center pb-2 shrink-0 z-20">
             <div className={`
               bg-black/60 backdrop-blur-xl px-6 py-4 rounded-2xl border border-white/10 shadow-2xl transition-all duration-500
