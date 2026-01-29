@@ -104,9 +104,9 @@ export default function ResumeAnalyzer() {
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-green-500/30 overflow-x-hidden">
 
-      {/* Header */}
+
       <div className="max-w-7xl mx-auto px-4 md:px-6 pt-8 md:pt-12 pb-6 md:pb-8">
-          
+
         <header className="border-b border-neutral-800 pb-6 md:pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 to-neutral-500 tracking-tight">
@@ -129,10 +129,10 @@ export default function ResumeAnalyzer() {
         </header>
       </div>
 
-      {/* Main Content */}
+
       <div className="max-w-7xl mx-auto px-4 md:px-6 pb-20 space-y-8 md:space-y-10">
 
-        {/* Upload Section */}
+
         <div className="bg-[#0f0f0f] border border-neutral-800 rounded-2xl p-6 md:p-10 text-center transition-all hover:border-neutral-600 relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-b from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
           <input type="file" id="resume-upload" accept=".pdf,.docx,.txt" onChange={handleFileUpload} className="hidden" />
@@ -150,7 +150,7 @@ export default function ResumeAnalyzer() {
           )}
         </div>
 
-        {/* Error */}
+
         {result?.error && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-red-950/30 border border-red-800/50 text-red-200 p-6 rounded-2xl flex items-center gap-4">
             <XCircle size={28} className="shrink-0" />
@@ -158,12 +158,12 @@ export default function ResumeAnalyzer() {
           </motion.div>
         )}
 
-        {/* Results */}
+
         <AnimatePresence>
           {result && !result.error && (
             <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6 md:space-y-8">
 
-              {/* Top Metrics */}
+
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <motion.div variants={itemVariants} className="lg:col-span-4 bg-[#111] border border-neutral-800 rounded-2xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
@@ -203,7 +203,7 @@ export default function ResumeAnalyzer() {
                 </motion.div>
               </div>
 
-              {/* Charts & Graphs - WRAPPED IN isMounted CHECK */}
+
               <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-[#111] border border-neutral-800 rounded-2xl p-6 md:p-8">
                   <div className="flex items-center justify-between mb-6">
@@ -256,7 +256,7 @@ export default function ResumeAnalyzer() {
                 </div>
               </motion.div>
 
-              {/* Detailed Breakdown */}
+
               <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
                 <div className="bg-[#111] border border-neutral-800 rounded-2xl p-6 md:p-8 hover:border-green-900/50 transition-colors h-full">
                   <h3 className="text-green-400 font-bold text-lg flex items-center gap-2 mb-6"><CheckCircle size={20} /> Core Strengths</h3>

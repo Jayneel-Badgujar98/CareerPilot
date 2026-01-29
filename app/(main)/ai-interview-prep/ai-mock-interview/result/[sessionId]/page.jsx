@@ -58,7 +58,7 @@
 //                     contents: `
 //             # ROLE
 //             You are a world-class Executive Hiring Manager and a Behavioral Psychologist with 20 years of experience at top-tier firms like Google and McKinsey.
-            
+
 //             # CONTEXT
 //             Job Role: ${session.jobRole}
 //             Target Company: ${session.companyName || 'Fortune 500 Standard'}
@@ -557,7 +557,7 @@ export default function ResultPage() {
 
                 let rawText = "";
                 if (typeof response.text === 'function') {
-                    rawText = response.text(); 
+                    rawText = response.text();
                 } else if (typeof response.text === 'string') {
                     rawText = response.text;
                 } else if (response.candidates && response.candidates[0]?.content?.parts?.[0]?.text) {
@@ -568,7 +568,7 @@ export default function ResultPage() {
 
                 const cleanedText = cleanJsonResponse(rawText);
                 const result = JSON.parse(cleanedText);
-                
+
                 const success = await updateSessionAnalysis(sessionId, result);
                 if (success) {
                     setSession(prev => ({ ...prev, analysis: result }));
@@ -617,7 +617,7 @@ export default function ResultPage() {
 
     return (
         <div className="min-h-screen bg-[#020202] text-slate-200 pb-20 selection:bg-indigo-500/30">
-            {/* Background Gradients */}
+
             <div className="fixed top-0 left-0 w-full h-full pointer-events-none opacity-20">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/20 blur-[120px] rounded-full" />
                 <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/20 blur-[120px] rounded-full" />
@@ -625,7 +625,7 @@ export default function ResultPage() {
 
             <div className="relative z-10 max-w-6xl mx-auto px-6 py-12 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
 
-                {/* 1. HERO HEADER */}
+
                 <header className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-b border-white/5 pb-8">
                     <div className="lg:col-span-8 space-y-4">
                         <div className="flex items-center gap-3">
@@ -657,14 +657,14 @@ export default function ResultPage() {
                     </div>
                 </header>
 
-                {/* --- NEW SECTION: SESSION CONTEXT DETAILS --- */}
+
                 <div className="bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 shadow-sm">
                     <h3 className="text-slate-400 font-bold uppercase text-[10px] tracking-widest mb-4 flex items-center gap-2">
                         <Briefcase size={14} className="text-indigo-500" /> Session Context
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        
-                        {/* Company */}
+
+
                         <div className="space-y-1">
                             <div className="flex items-center gap-2 text-slate-500 text-[10px] font-bold uppercase tracking-wider">
                                 <Building2 size={12} /> Target Company
@@ -672,7 +672,7 @@ export default function ResultPage() {
                             <p className="text-sm font-semibold text-white">{session.companyName || "Not Specified"}</p>
                         </div>
 
-                        {/* Job Role */}
+
                         <div className="space-y-1">
                             <div className="flex items-center gap-2 text-slate-500 text-[10px] font-bold uppercase tracking-wider">
                                 <Target size={12} /> Role Title
@@ -680,7 +680,7 @@ export default function ResultPage() {
                             <p className="text-sm font-semibold text-white">{session.jobRole}</p>
                         </div>
 
-                        {/* Tech Stack */}
+
                         <div className="space-y-1 md:col-span-2 lg:col-span-2">
                             <div className="flex items-center gap-2 text-slate-500 text-[10px] font-bold uppercase tracking-wider">
                                 <Code2 size={12} /> Tech Stack
@@ -690,10 +690,10 @@ export default function ResultPage() {
                             </p>
                         </div>
 
-                        {/* Job Description (Expandable) */}
+
                         {session.jobDescription && (
                             <div className="md:col-span-2 lg:col-span-4 pt-4 border-t border-white/5 mt-2">
-                                <div 
+                                <div
                                     className="flex items-center justify-between cursor-pointer group"
                                     onClick={() => setShowFullJD(!showFullJD)}
                                 >
@@ -711,9 +711,9 @@ export default function ResultPage() {
                         )}
                     </div>
                 </div>
-                {/* --------------------------------------------- */}
 
-                {/* 2. STATS GRID */}
+
+
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <StatCard label="Technical" score={a?.categoryScores?.technicalDepth || 0} color="indigo" icon={<Briefcase size={16} />} />
                     <StatCard label="Communication" score={a?.categoryScores?.communicationClarity || 0} color="blue" icon={<MessageSquare size={16} />} />
@@ -721,7 +721,7 @@ export default function ResultPage() {
                     <StatCard label="Confidence" score={a?.categoryScores?.confidenceLevel || 0} color="purple" icon={<Target size={16} />} />
                 </div>
 
-                {/* 3. RECRUITER'S MINDSET */}
+
                 <section className="bg-indigo-600/[0.03] border border-indigo-500/20 p-6 rounded-2xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-6 opacity-10">
                         <BrainCircuit size={80} className="text-indigo-500" />
@@ -736,7 +736,7 @@ export default function ResultPage() {
                     </div>
                 </section>
 
-                {/* 5. STRENGTHS & WEAKNESSES */}
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div className="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 space-y-6">
                         <h3 className="flex items-center gap-2 text-emerald-400 font-bold uppercase text-[10px] tracking-widest">
@@ -773,7 +773,7 @@ export default function ResultPage() {
                     </div>
                 </div>
 
-                {/* 4. VERBATIM DEEP DIVE */}
+
                 <section className="space-y-4">
                     <h3 className="flex items-center gap-2 text-white font-bold uppercase text-[10px] tracking-widest ml-1">
                         <ArrowUpRight size={14} className="text-indigo-500" /> Improvement Opportunities Based on Interview Transcript

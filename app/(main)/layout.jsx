@@ -4,10 +4,7 @@ import BackButton from "@/components/backButton"
 const MainLayout = ({ children }) => {
   return (
     <div className="mt-20 container mx-auto mb-16">
-      {/* Suspense creates a "boundary". If any component inside 'children' 
-         is slow (fetching data), this fallback shows ONLY inside this div 
-         instead of blocking the whole page.
-      */}
+
       <Suspense fallback={<PageSkeleton />}>
         <BackButton />
         {children}
@@ -25,7 +22,7 @@ function PageSkeleton() {
       {/* Header imitation */}
       <div className="h-8 w-1/3 bg-neutral-800/50 rounded-lg" />
       <div className="h-4 w-2/3 bg-neutral-800/30 rounded-lg" />
-      
+
       {/* Content imitation */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
         {[1, 2, 3].map((i) => (

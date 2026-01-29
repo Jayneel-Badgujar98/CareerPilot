@@ -20,8 +20,7 @@ import {
   LineChart
 } from "lucide-react";
 
-// ✅ ENHANCED DATA: Specific features for the Hero Scroller
-// (I defined this here to ensure your specific "Mock Quiz" and "Builder" requests are shown immediately)
+
 const heroFeatures1 = [
   { icon: <Mic className="text-red-500" />, title: "AI Mock Interview", metric: "Live Audio" },
   { icon: <BrainCircuit className="text-indigo-500" />, title: "AI Mock Quiz", metric: "Hard Mode" },
@@ -63,7 +62,7 @@ const HeroSection = () => {
   return (
     <section className="w-full pt-36 md:pt-48 pb-10 relative overflow-hidden">
 
-      {/* --- BACKGROUND LAYERS --- */}
+     
       <div className="absolute inset-0 -z-50 bg-background" />
       <div className="absolute inset-0 -z-40 w-full h-full">
         <Image
@@ -71,13 +70,13 @@ const HeroSection = () => {
           alt="Background Pattern"
           fill
           priority
-          className="object-cover" // Adjusted opacity for dark theme balance
+          className="object-cover"
         />
       </div>
 
       <div className="container mx-auto px-4 text-center z-10 relative">
 
-        {/* --- NEWS PILL --- */}
+       
         <div className="flex justify-center mb-8 fade-in-up delay-100">
           <div className="group inline-flex items-center gap-2 rounded-full border border-primary/10 bg-secondary/30 px-4 py-1.5 text-xs font-medium text-secondary-foreground hover:bg-secondary/50 transition-all cursor-pointer backdrop-blur-md">
             <span className="relative flex h-2 w-2">
@@ -89,7 +88,7 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* --- HEADLINE --- */}
+
         <div className="space-y-6 mx-auto max-w-4xl fade-in-up delay-200">
           <h1 className="text-5xl font-extrabold tracking-tight md:text-7xl lg:text-8xl leading-[1.1] text-foreground">
             Your Career, <br className="hidden md:block" />
@@ -102,9 +101,9 @@ const HeroSection = () => {
           </p>
         </div>
 
-        {/* --- CTA BUTTONS --- */}
+      
         <div className="flex flex-col sm:flex-row justify-center gap-6 mt-12 fade-in-up delay-300">
-          {/* PRIMARY CTA */}
+          
           <Link href="/ai-interview-prep">
             <Button
               size="lg"
@@ -118,7 +117,7 @@ const HeroSection = () => {
             </Button>
           </Link>
 
-          {/* SECONDARY CTA */}
+         
           <Link href="/analyse-resume">
             <Button
               size="lg"
@@ -131,20 +130,20 @@ const HeroSection = () => {
           </Link>
         </div>
 
-        {/* --- REFINED FEATURES SECTION (Integrated Here) --- */}
+       
         <div className="mt-24 w-full fade-in-up delay-500">
           <p className="text-sm text-muted-foreground uppercase tracking-widest mb-6 font-semibold opacity-70">
             Powered by Advanced AI Models
           </p>
 
           <div className="relative max-w-[100vw] overflow-hidden py-4">
-            {/* Soft Fade Masks for Seamless Look */}
+            
             <div className="absolute top-0 left-0 h-full w-24 md:w-48 bg-gradient-to-r from-background to-transparent z-20 pointer-events-none" />
             <div className="absolute top-0 right-0 h-full w-24 md:w-48 bg-gradient-to-l from-background to-transparent z-20 pointer-events-none" />
 
-            {/* ROW 1: SCROLLS LEFT */}
+            
             <div className="flex gap-6 animate-scroll-left hover:[animation-play-state:paused] w-max">
-              {/* Original Set */}
+              
               {heroFeatures1.map((feature, index) => (
                 <FeatureCard
                   key={`row1-${index}`}
@@ -153,7 +152,7 @@ const HeroSection = () => {
                   metric={feature.metric}
                 />
               ))}
-              {/* Duplicate Set for Infinite Loop */}
+              
               {heroFeatures1.map((feature, index) => (
                 <FeatureCard
                   key={`row1-dup-${index}`}
@@ -164,9 +163,9 @@ const HeroSection = () => {
               ))}
             </div>
 
-            {/* ROW 2: SCROLLS RIGHT (Added Margin Top) */}
+            
             <div className="flex gap-6 mt-6 animate-scroll-right hover:[animation-play-state:paused] w-max">
-              {/* Original Set */}
+              
               {heroFeatures2.map((feature, index) => (
                 <FeatureCard
                   key={`row2-${index}`}
@@ -175,7 +174,7 @@ const HeroSection = () => {
                   metric={feature.metric}
                 />
               ))}
-              {/* Duplicate Set for Infinite Loop */}
+              
               {heroFeatures2.map((feature, index) => (
                 <FeatureCard
                   key={`row2-dup-${index}`}
@@ -193,8 +192,7 @@ const HeroSection = () => {
   );
 };
 
-// --- ENHANCED SUB-COMPONENT ---
-// Professional Glassmorphism Card
+
 const FeatureCard = ({ title, metric, icon }) => (
   <div className="flex items-center gap-4 bg-background/40 border border-white/5 backdrop-blur-md rounded-xl px-6 py-4 min-w-[240px] shadow-lg shadow-black/5 hover:shadow-indigo-500/10 hover:border-indigo-500/30 hover:-translate-y-1 transition-all duration-300 group cursor-default select-none">
     <div className="p-2.5 bg-white/5 rounded-lg border border-white/5 group-hover:scale-110 group-hover:bg-indigo-500/10 transition-transform duration-300">

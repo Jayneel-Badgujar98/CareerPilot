@@ -92,12 +92,12 @@ export default function SetupPage() {
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-200 pb-20 selection:bg-cyan-500/30 overflow-x-hidden font-sans relative">
 
-      {/* BACKGROUND GRID */}
+
       <div className="absolute inset-0 z-0 opacity-20 pointer-events-none"
         style={{ backgroundImage: 'radial-gradient(#404040 1px, transparent 1px)', backgroundSize: '24px 24px' }}>
       </div>
 
-      {/* BACKGROUND EFFECTS */}
+
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-500/10 blur-[120px] rounded-full mix-blend-screen" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-violet-600/15 blur-[120px] rounded-full mix-blend-screen" />
@@ -106,7 +106,7 @@ export default function SetupPage() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:py-12 py-6 space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-1000">
 
-        {/* HEADER */}
+
         <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-neutral-800 pb-10">
           <div className="flex items-start gap-5">
             {/* <button
@@ -131,8 +131,8 @@ export default function SetupPage() {
         <form onSubmit={handleSubmit} noValidate className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
 
           <div className="lg:col-span-8 space-y-6 lg:space-y-8">
-            {/* CARD 1: Contextual Intelligence */}
-            {/* Responsive Padding: p-5 on mobile, p-10 on desktop */}
+
+
             <section className="bg-neutral-900/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-5 sm:p-8 md:p-10 space-y-8 shadow-2xl relative overflow-hidden group hover:border-white/10 transition-colors">
               <div className="flex items-center gap-3 text-cyan-400">
                 <div className="p-2 bg-cyan-500/10 rounded-lg border border-cyan-500/20"><Briefcase size={20} /></div>
@@ -243,7 +243,7 @@ export default function SetupPage() {
               </div>
             </section>
 
-            {/* CARD 2: Interviewer Persona */}
+
             <section className="bg-neutral-900/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-5 sm:p-8 md:p-10 space-y-8 shadow-2xl overflow-visible hover:border-white/10 transition-colors">
               <div className="flex items-center gap-3 text-violet-400">
                 <div className="p-2 bg-violet-500/10 rounded-lg border border-violet-500/20"><Bot size={20} /></div>
@@ -311,7 +311,7 @@ export default function SetupPage() {
             </section>
           </div>
 
-          {/* Sticky Sidebar */}
+
           <div className="lg:col-span-4 h-full">
             <div className="lg:sticky lg:top-12 space-y-6">
               <div className="bg-neutral-900/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-5 sm:p-8 space-y-10 shadow-2xl ring-1 ring-white/5">
@@ -324,7 +324,7 @@ export default function SetupPage() {
                     </div>
                   </div>
 
-                  {/* Summary Items */}
+
                   <div className="space-y-3 min-h-[140px]">
                     <div className="group/item min-h-[48px]">
                       {formData.jobRole ? (

@@ -9,40 +9,40 @@ export default function InterviewHub() {
   return (
     // Changed min-h-screen to min-h-dvh for better mobile browser support
     <main className="min-h-dvh bg-black selection:bg-indigo-500/30">
-      {/* Adjusted padding: py-12 for mobile, py-24 for desktop */}
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
-      
-        {/* --- HEADER --- */}
+
+
         <div className="text-center mb-12 md:mb-20">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mb-6"
           >
-             {/* FIXED: Removed nested h1. Used a single clean h1 with responsive text sizes */}
-             <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 to-neutral-500 tracking-tight pb-2">
-               AI Powered Interview Preparation
-             </h1>
+
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 to-neutral-500 tracking-tight pb-2">
+              AI Powered Interview Preparation
+            </h1>
           </motion.div>
-          
-          <motion.p 
+
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed px-4"
           >
-            Level up your interview skills with our industry-leading AI tools. 
-            Use the AI Mock Interviewer to test your interview skills and 
+            Level up your interview skills with our industry-leading AI tools.
+            Use the AI Mock Interviewer to test your interview skills and
             Mock Quiz to test your MCQS.
           </motion.p>
         </div>
 
-        {/* --- GRID SECTION (Responsive) --- */}
-        {/* Added gap-6 for mobile, gap-8 for desktop */}
+
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          
-          <FeatureCard 
+
+          <FeatureCard
             href="/ai-interview-prep/ai-mock-interview"
             title="AI Mock Interview"
             description="Experience a realistic voice interview with our AI. Get instant feedback on your tone, pace, and answer quality."
@@ -52,7 +52,7 @@ export default function InterviewHub() {
             isNew={true}
           />
 
-          <FeatureCard 
+          <FeatureCard
             href="/ai-interview-prep/mock-interview-quiz"
             title="Mock Interview Quiz"
             description="Access 5000+ curated questions from top tech companies. Test your knowledge across multiple domains."
@@ -80,22 +80,22 @@ function FeatureCard({ title, description, icon, href, gradient, delay, isNew })
         transition={{ duration: 0.4, delay }}
         className="relative h-full"
       >
-        {/* 1. OUTER HOVER GLOW - Hidden on mobile to save performance */}
-        <div 
+
+        <div
           className={`
             hidden md:block absolute -inset-0.5 bg-gradient-to-b ${gradient} 
             rounded-[24px] blur-2xl opacity-0 group-hover:opacity-40 
             transition-opacity duration-500
-          `} 
+          `}
         />
 
-        {/* 2. MAIN CARD CONTAINER */}
+
         <div className="relative h-full rounded-[24px] p-[1px] bg-gradient-to-b from-white/15 via-white/5 to-transparent overflow-hidden group-hover:from-indigo-400/50 transition-colors duration-500">
-          
-          {/* 3. CARD BACKGROUND */}
+
+
           <div className="relative h-full flex flex-col rounded-[23px] overflow-hidden bg-neutral-950">
-            
-            {/* Background Layers */}
+
+
             <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-neutral-950 to-black"></div>
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
             <div className={`
@@ -104,11 +104,11 @@ function FeatureCard({ title, description, icon, href, gradient, delay, isNew })
             `}></div>
             <div className="absolute inset-0 opacity-[0.05] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none mix-blend-overlay"></div>
 
-            
-            {/* --- CONTENT CONTAINER --- */}
+
+
             <div className="relative z-10 p-6 sm:p-8 flex flex-col h-full">
 
-              {/* --- HEADER --- */}
+
               <div className="flex justify-between items-start mb-6 sm:mb-8">
                 <div className={`
                   p-3 sm:p-4 rounded-2xl bg-white/5 border border-white/10 
@@ -119,7 +119,7 @@ function FeatureCard({ title, description, icon, href, gradient, delay, isNew })
                   {icon}
                 </div>
 
-                {/* --- LARGE BADGE (Positioned safely for mobile) --- */}
+
                 {isNew && (
                   <div className="absolute top-5 right-5 z-20">
                     <div className="relative group/badge">
@@ -140,18 +140,18 @@ function FeatureCard({ title, description, icon, href, gradient, delay, isNew })
                 )}
               </div>
 
-              {/* --- TEXT CONTENT --- */}
+
               <div className="flex-grow space-y-3 sm:space-y-4 mb-6 sm:mb-8">
                 <h3 className="text-2xl sm:text-3xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-sky-200 group-hover:via-white group-hover:to-white transition-all duration-300">
                   {title}
                 </h3>
-                
+
                 <p className="text-slate-400 font-medium text-sm sm:text-base leading-relaxed group-hover:text-slate-300 transition-colors">
                   {description}
                 </p>
               </div>
 
-              {/* --- LIQUID EXPAND BUTTON --- */}
+
               <div className="mt-auto relative z-20">
                 <div className="
                   relative overflow-hidden rounded-xl bg-neutral-900 border border-white/10 
@@ -198,38 +198,38 @@ function ComingSoonCard({ delay }) {
       transition={{ duration: 0.4, delay }}
       className="relative h-full rounded-3xl p-[1px] overflow-hidden group"
     >
-      {/* Grayscale Content */}
+
       <div className="relative h-full bg-gray-950/40 backdrop-blur-sm rounded-[23px] p-6 sm:p-8 border border-white/5 border-dashed flex flex-col justify-between">
-        
+
         <div className="relative">
-          {/* Header */}
+
           <div className="flex justify-between items-start mb-6 sm:mb-8">
             <div className="p-3 sm:p-4 rounded-2xl bg-gray-800/50 ring-1 ring-white/10">
               <Code2 className="w-5 h-5 sm:w-6 sm:h-6 text-gray-500" />
             </div>
-            
-            {/* --- COMING SOON BADGE --- */}
+
+
             <div className="absolute top-0 right-0">
-               <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-neutral-800 border border-neutral-700 shadow-lg">
-                 <Clock className="w-3 h-3 sm:w-4 sm:h-4 text-neutral-400" />
-                 <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-neutral-300 whitespace-nowrap">
-                   Coming Soon
-                 </span>
-               </div>
+              <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-neutral-800 border border-neutral-700 shadow-lg">
+                <Clock className="w-3 h-3 sm:w-4 sm:h-4 text-neutral-400" />
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-neutral-300 whitespace-nowrap">
+                  Coming Soon
+                </span>
+              </div>
             </div>
           </div>
 
           <h3 className="text-xl sm:text-2xl font-bold text-gray-500 mb-3">Coding Challenges</h3>
           <p className="text-gray-600 text-sm leading-relaxed font-medium">
-            Practice LeetCode-style problems tailored to your target role. 
+            Practice LeetCode-style problems tailored to your target role.
             Supported languages: Python, JavaScript, C++.
           </p>
         </div>
 
         <div className="mt-6 sm:mt-8">
-           <span className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-gray-800/50 text-gray-500 text-[10px] sm:text-xs font-bold border border-gray-700/50 uppercase tracking-widest">
-             Development in Progress
-           </span>
+          <span className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-gray-800/50 text-gray-500 text-[10px] sm:text-xs font-bold border border-gray-700/50 uppercase tracking-widest">
+            Development in Progress
+          </span>
         </div>
       </div>
     </motion.div>

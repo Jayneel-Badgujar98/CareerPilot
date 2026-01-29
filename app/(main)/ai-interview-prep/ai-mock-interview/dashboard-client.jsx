@@ -56,7 +56,7 @@ export default function DashboardClient({ sessions = [] }) {
     return (
         <div className="min-h-screen bg-[#050505] text-slate-300 pb-20 selection:bg-indigo-500/30 font-sans">
 
-            {/* Background Ambience */}
+
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/10 blur-[120px] rounded-full" />
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full" />
@@ -65,7 +65,7 @@ export default function DashboardClient({ sessions = [] }) {
 
             <div className="relative z-10 max-w-6xl mx-auto px-6 py-12 space-y-10 animate-in fade-in duration-700">
 
-                {/* HEADER */}
+
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 border-b border-white/5 pb-8">
                     <div className="space-y-2">
                         {/* <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20"> */}
@@ -89,7 +89,7 @@ export default function DashboardClient({ sessions = [] }) {
                     </button>
                 </header>
 
-                {/* 1. HIGH-LEVEL STATS */}
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <StatCard
                         icon={<Trophy className="text-amber-400" />}
@@ -113,10 +113,10 @@ export default function DashboardClient({ sessions = [] }) {
 
                 </div>
 
-                {/* 2. SKILL PROFICIENCY (NEW SECTION) */}
+
                 {stats?.completedCount > 0 && (
                     <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        {/* Skill Bars */}
+
                         <div className="lg:col-span-2 bg-[#0A0A0B] border border-white/10 p-8 rounded-3xl">
                             <div className="flex items-center gap-3 mb-8">
                                 <BarChart3 size={20} className="text-indigo-500" />
@@ -130,7 +130,7 @@ export default function DashboardClient({ sessions = [] }) {
                             </div>
                         </div>
 
-                        {/* Quick Insight */}
+
                         <div className="lg:col-span-1 bg-gradient-to-br from-indigo-900/20 to-black border border-indigo-500/20 p-8 rounded-3xl flex flex-col justify-center relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-20">
                                 <BrainCircuit size={100} className="text-indigo-400" />
@@ -146,7 +146,7 @@ export default function DashboardClient({ sessions = [] }) {
                     </section>
                 )}
 
-                {/* 3. SESSION HISTORY */}
+
                 <section className="space-y-6">
                     <div className="flex items-center justify-between px-2">
                         <div className="flex items-center gap-3">
@@ -222,7 +222,7 @@ function SessionRow({ session, router }) {
             className="group cursor-pointer bg-[#0A0A0B] border border-white/5 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-6 hover:bg-[#0E0E0F] hover:border-indigo-500/30 transition-all"
         >
             <div className="flex items-center gap-6 w-full">
-                {/* Score Badge */}
+
                 <div className={`h-14 w-14 rounded-xl flex flex-col items-center justify-center shrink-0 border transition-colors ${session.analysis
                     ? (isHigh ? 'border-emerald-500/20 bg-emerald-500/5 text-emerald-400' : 'border-amber-500/20 bg-amber-500/5 text-amber-400')
                     : 'border-white/5 bg-white/5 text-slate-600'

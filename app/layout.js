@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
             <Header />
             <main className="min-h-screen ">
               <SmoothScroll>
-                {/* ✅ Added Suspense Wrapper with a professional Fallback */}
+
                 <Suspense fallback={<LoadingFallback />}>
                   {children}
                 </Suspense>

@@ -26,7 +26,7 @@ export default async function Header() {
   return (
     <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo Section */}
+
         <Link href="/">
           <Image
             src={"/mainLogo.png"}
@@ -37,10 +37,10 @@ export default async function Header() {
           />
         </Link>
 
-        {/* Action Buttons */}
+
         <div className="flex items-center space-x-2 md:space-x-4">
           <SignedIn>
-            {/* Industry Insights */}
+
             <Link href="/dashboard">
               <Button
                 variant="outline"
@@ -54,7 +54,7 @@ export default async function Header() {
               </Button>
             </Link>
 
-            {/* Growth Tools - The "Hero" Dropdown */}
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg border-0 ring-offset-2 focus:ring-2">
@@ -72,18 +72,18 @@ export default async function Header() {
 
               <DropdownMenuContent align="end" className="w-72 p-3 shadow-2xl border-indigo-100/20 bg-background/95 backdrop-blur-xl rounded-xl">
 
-                {/* Career Prep Section */}
+
                 <div className="px-3 py-2 text-xs font-bold text-muted-foreground/70 uppercase tracking-widest">
                   Career Prep
                 </div>
 
                 <DropdownMenuItem asChild className="p-0 mb-1 focus:bg-transparent">
                   <Link href="/ai-interview-prep" className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/50 group transition-all duration-200 cursor-pointer">
-                    {/* Icon Box */}
+
                     <div className="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:shadow-orange-200">
                       <GraduationCap className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
                     </div>
-                    {/* Text */}
+
                     <div className="flex-1">
                       <div className="font-semibold text-foreground group-hover:text-orange-600 transition-colors">AI Interview Prep</div>
                       <p className="text-xs text-muted-foreground">Mock interviews with AI</p>
@@ -105,7 +105,7 @@ export default async function Header() {
 
 
 
-                {/* Resume Section */}
+
                 <div className="px-3 py-2 mt-2 border-t border-border/50 text-xs font-bold text-muted-foreground/70 uppercase tracking-widest">
                   Resume Mastery
                 </div>
