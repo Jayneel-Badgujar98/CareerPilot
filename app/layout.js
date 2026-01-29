@@ -8,6 +8,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { dark } from "@clerk/themes";
 import SmoothScroll from "@/components/SmoothScroll";
 import BackButton from "@/components/backButton";
+import { Analytics } from "@vercel/analytics/next"
+
 
 const inter = Inter({ subsets: ["latin"] });
 
