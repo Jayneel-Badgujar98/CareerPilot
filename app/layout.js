@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import { Suspense } from "react"; // ✅ Imported Suspense
+import { Suspense } from "react"; 
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
@@ -52,6 +52,7 @@ export default function RootLayout({ children }) {
                 <p>Made with 💗 by Jayneel S Badgujar</p>
               </div>
             </footer>
+            <Analytics />
           </ThemeProvider>
         </body>
       </html>
