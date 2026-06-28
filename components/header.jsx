@@ -78,7 +78,7 @@ export default async function Header() {
                 </div>
 
                 <DropdownMenuItem asChild className="p-0 mb-1 focus:bg-transparent">
-                  <Link href="/ai-interview-prep" className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/50 group transition-all duration-200 cursor-pointer">
+                  <Link href="/ai-career-prep" className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/50 group transition-all duration-200 cursor-pointer">
 
                     <div className="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:shadow-orange-200">
                       <GraduationCap className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
@@ -92,7 +92,7 @@ export default async function Header() {
                 </DropdownMenuItem>
 
                 <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
-                  <Link href="/analyse-resume" className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/50 group transition-all duration-200 cursor-pointer">
+                  <Link href="/ai-career-prep/ai-analyse-resume" className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/50 group transition-all duration-200 cursor-pointer">
                     <div className="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:shadow-purple-200">
                       <FileSearch className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
                     </div>
@@ -111,7 +111,7 @@ export default async function Header() {
                 </div>
 
                 <DropdownMenuItem asChild className="p-0 mb-1 focus:bg-transparent">
-                  <Link href="/resume" className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/50 group transition-all duration-200 cursor-pointer">
+                  <Link href="/ai-career-prep/resume" className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/50 group transition-all duration-200 cursor-pointer">
                     <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:shadow-blue-200">
                       <FileText className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
                     </div>
@@ -123,7 +123,7 @@ export default async function Header() {
                 </DropdownMenuItem>
 
                 <DropdownMenuItem asChild className="p-0 mb-2 focus:bg-transparent">
-                  <Link href="/ai-cover-letter" className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/50 group transition-all duration-200 cursor-pointer">
+                  <Link href="/ai-career-prep/ai-cover-letter" className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/50 group transition-all duration-200 cursor-pointer">
                     <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:shadow-emerald-200">
                       <PenBox className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
                     </div>

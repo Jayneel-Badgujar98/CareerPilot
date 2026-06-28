@@ -194,7 +194,7 @@ export default function LandingPage() {
               Join thousands of professionals who are advancing their careers
               with AI-powered guidance.
             </p>
-            <Link href="/ai-interview-prep" passHref>
+            <Link href="/ai-career-prep" passHref>
               <Button
                 size="lg"
                 variant="secondary"

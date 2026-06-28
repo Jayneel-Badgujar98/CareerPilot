@@ -534,11 +534,11 @@
 "use server";
 
 import { generateObject, tool } from "ai";
-import { getAIModel } from "@/lib/resumeAnalyse/ai-config";
+import { getAIModel } from "@/ai/shared/gemini";
 import { tavily } from "@tavily/core";
 import mammoth from "mammoth";
 import { z } from "zod";
-import { ANALYZE_RESUME_PROMPT } from "@/lib/Prompts/AnalyseResumePrompt";
+import { ANALYZE_RESUME_PROMPT } from "@/ai/resume/prompts";
 import PdfParser from "pdf2json"; // ✅ FIX: Use pdf2json instead of pdfjs-dist
 
 // Initialize Tavily Client

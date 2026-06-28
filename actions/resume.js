@@ -32,7 +32,7 @@ export async function saveResume(content) {
       },
     });
 
-    revalidatePath("/resume");
+    revalidatePath("/ai-career-prep/resume");
     return resume;
   } catch (error) {
     console.error("Error saving resume:", error);

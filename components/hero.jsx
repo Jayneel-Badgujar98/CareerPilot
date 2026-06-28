@@ -104,7 +104,7 @@ const HeroSection = () => {
       
         <div className="flex flex-col sm:flex-row justify-center gap-6 mt-12 fade-in-up delay-300">
           
-          <Link href="/ai-interview-prep">
+          <Link href="/ai-career-prep">
             <Button
               size="lg"
               className="relative group h-14 px-8 rounded-full bg-gradient-to-br from-indigo-600 to-violet-700 text-white font-semibold text-lg tracking-tight overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(124,58,237,0.3)] border border-white/10 border-t-white/20"
@@ -118,7 +118,7 @@ const HeroSection = () => {
           </Link>
 
          
-          <Link href="/analyse-resume">
+          <Link href="/ai-career-prep/ai-analyse-resume">
             <Button
               size="lg"
               variant="ghost"

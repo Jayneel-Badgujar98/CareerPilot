@@ -1,7 +1,7 @@
 "use server";
 
 import { generateObject } from "ai";
-import { getAIModel } from "@/lib/resumeAnalyse/ai-config";
+import { getAIModel } from "@/ai/shared/gemini";
 import { z } from "zod";
 
 // --- STRICT SCHEMA FOR REFINEMENT ---
