@@ -1,17 +1,20 @@
-export const GraphState = {
+import { Annotation } from "@langchain/langgraph";
 
-    difficulty: "",
+export const GraphState = Annotation.Root({
+  // Input fields
+  pdfBuffer: Annotation(),
+  difficulty: Annotation(),
+  assessmentType: Annotation(),
+  assessmentLength: Annotation(),
+  instructions: Annotation(),
 
-    assessmentType: "",
+  // Intermediate state fields
+  extractedText: Annotation(),
+  documentType: Annotation(),
 
-    assessmentLength: "",
-
-    instructions: "",
-
-    extractedText: "",
-
-    documentType: "",
-
-    questions: null,
-
-}
+  // Output fields populated by generation nodes
+  metadata: Annotation(),
+  mcqs: Annotation(),
+  theory: Annotation(),
+  questions: Annotation(),
+});

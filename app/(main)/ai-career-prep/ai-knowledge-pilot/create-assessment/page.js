@@ -147,7 +147,6 @@ export default function CreateAssessmentPage() {
     }
   };
 
-  // Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) {
@@ -158,13 +157,33 @@ export default function CreateAssessmentPage() {
     setIsSubmitting(true);
     toast.loading("Analyzing document & generating AI questions...", { id: "submit-toast" });
 
-    // Simulate complete server-side question generation
-    setTimeout(() => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file.raw);
+      formData.append("difficulty", difficulty);
+      formData.append("assessmentType", type === "mcqs" ? "mcq" : "mcq_theory");
+      formData.append("assessmentLength", length);
+      formData.append("instructions", instructions);
+
+      const response = await fetch("/api/ai/knowledge-pilot", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to create assessment");
+      }
+
       toast.success("Assessment created successfully!", { id: "submit-toast" });
+      router.push(`/ai-career-prep/ai-knowledge-pilot/assessment/${result.sessionId}`);
+    } catch (error) {
+      console.error("Submission Error:", error);
+      toast.error(error.message || "Something went wrong.", { id: "submit-toast" });
+    } finally {
       setIsSubmitting(false);
-      // Redirect to a placeholder test path
-      router.push(`/ai-career-prep/ai-knowledge-pilot/assessment/session_mock`);
-    }, 2500);
+    }
   };
 
   const activeLength = lengthConfigs[type][length];

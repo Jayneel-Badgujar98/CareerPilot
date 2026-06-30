@@ -3,16 +3,16 @@ import { GraphState } from "./graph-state";
 import {
   parsePdfNode,
   classifyDocumentNode,
-  generateResumeQuestionsNode,
-  generateExamQuestionsNode,
+  generateResumeQuestions,
+  generateExamQuestions,
 } from "./nodes";
 
 const graph = new StateGraph(GraphState)
   // Nodes
   .addNode("parsePdf", parsePdfNode)
   .addNode("classifyDocument", classifyDocumentNode)
-  .addNode("generateResumeQuestions", generateResumeQuestionsNode)
-  .addNode("generateExamQuestions", generateExamQuestionsNode)
+  .addNode("generateResumeQuestions", generateResumeQuestions)
+  .addNode("generateExamQuestions", generateExamQuestions)
 
 
   // Flow

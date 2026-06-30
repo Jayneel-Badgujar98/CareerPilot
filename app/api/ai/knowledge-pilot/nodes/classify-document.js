@@ -13,7 +13,12 @@ const model = new ChatGoogle({
 export async function classifyDocumentNode(state) {
   try {
     console.log("--- STARTING DOCUMENT CLASSIFICATION ---");
-    const { extractedText } = state;
+    const { extractedText, documentType } = state;
+
+    if (documentType) {
+      console.log(`Document type already classified: ${documentType}. Bypassing classification.`);
+      return { documentType };
+    }
 
     if (!extractedText) {
       throw new Error("No extracted text found in Graph State.");

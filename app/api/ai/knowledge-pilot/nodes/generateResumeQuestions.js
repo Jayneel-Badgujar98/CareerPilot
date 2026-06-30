@@ -1,3 +1,4 @@
+// app/api/ai/knowledge-pilot/nodes/generateResumeQuestions.js
 import { ChatGoogle } from "@langchain/google";
 import { z } from "zod";
 import { CONFIG } from "../config";
@@ -9,7 +10,7 @@ const model = new ChatGoogle({
     temperature: 0.2, // Slightly increased for diverse, sharp interview scenarios
 });
 
-export default async function generateResumeQuestionsNode(state) {
+export async function generateResumeQuestions(state) {
     try {
         console.log("--- STARTING DYNAMIC RESUME SPECIFIC INTERVIEW QUESTION GENERATION ---");
         const { extractedText, assessmentType, assessmentLength, difficulty, instructions } = state;
@@ -26,12 +27,14 @@ export default async function generateResumeQuestionsNode(state) {
                     difficulty: z.enum(["easy", "medium", "hard"]),
                     assessmentType: z.enum(["mcq", "mcq_theory"]),
                     assessmentLength: z.enum(["quick", "standard", "comprehensive"]),
+                    questionsInstructions : z.string().optional().describe("The Instructions given to generate the questions "),
                     candidateName: z.string().optional().describe("Extracted name of the applicant"),
                     professionDomain: z.string().describe("Identified primary domain/profession (e.g., Software Engineering, Marketing, Finance, Product Management)"),
                     primarySkillsOrTechStack: z.array(z.string()).describe("Core skills, frameworks, technologies, or tools identified in the resume"),
                 }),
                 mcqs: z.array(
                     z.object({
+                        topic: z.string().describe("The specific micro-topic this question belongs to (e.g. Git, React Hooks, Node.js Events, REST APIs, SQL Joins)"),
                         question: z.string(),
                         options: z.array(z.string()).length(4),
                         answer: z.string(),
@@ -40,9 +43,10 @@ export default async function generateResumeQuestionsNode(state) {
                 ),
                 theory: z.array(
                     z.object({
+                        topic: z.string().describe("The specific micro-topic this question belongs to (e.g. Git, React Hooks, Node.js Events, REST APIs, SQL Joins)"),
                         category: z.enum(["project_deep_dive", "strategy_and_design", "metric_verification", "behavioral"]),
                         question: z.string(),
-                        expectedAnswer: z.string().describe("Comprehensive, ideal professional response highlighting methodologies, core architecture, metrics, or frameworks"),
+                        expectedAnswer: z.string().describe("Expected Answer, ideal professional response highlighting methodologies, core architecture, metrics, or frameworks"),
                     })
                 ).default([]),
             })
@@ -73,6 +77,16 @@ CRITICAL INTERVIEW MODES & PARADIGMS:
 4. MCQ STRUCTURE:
    - Provide highly contextual domain/technical questions mapped to the core capabilities they explicitly claim to know.
    - Distractors must look highly authentic and challenging to intermediate/senior professionals.
+5. DIVERSE QUESTION STRUCTURE & CODE SNIPPETS (AVOID REPETITIVE "WHAT IS..." OR "WHICH IS..." PATTERNS):
+   - Do NOT generate simple factual definition questions (e.g. "What is X?"). 
+   - Mix multiple dynamic formats to make the assessment feel realistic and like a real technical interview:
+     * Predict Output: Show a code snippet and ask what it prints/outputs.
+     * Scenario-based: "Given \`Car c("Audi", 2023);\`, when is the constructor executed?" instead of "What is a constructor?".
+     * Debugging: Provide code with a subtle bug or anti-pattern and ask how to fix it.
+     * Fill-in-the-blank / Completion: Present code with a missing part and ask which option correctly completes it.
+     * Trade-off / Choice: "Which code will produce...?", "Choose the best implementation.", "Which statement is correct?" or "Identify the correct explanation."
+     * Situational: "What happens if...", "Which feature enables...".
+   - CODE SNIPPETS (MANDATORY FOR TECHNICAL FIELDS): For software development/engineering domains, you MUST write clean, indented code snippets inside standard markdown code blocks (e.g. \`\`\`cpp \\n ... \\n \`\`\`) directly in the question body.
 
 INTERVIEW SPECIFICATIONS:
 - Targeted Stress Level: ${difficulty.toUpperCase()}
@@ -88,12 +102,17 @@ ${instructions || "Interrogate core domain metrics, implementation frameworks, a
 
 Analyze the resume text, determine the profession, map out structural dependencies, extract metadata, and output the clean JSON object fitting the schema perfectly.`;
 
-        const interviewQuestions = await ResumeQuestionSchema.invoke([
+        const questions = await ResumeQuestionSchema.invoke([
             new SystemMessage(resumeSystemPrompt),
             new HumanMessage(`Here is the candidate's resume for your evaluation:\n\n${extractedText}`)
         ]);
 
-        return interviewQuestions;
+        if (questions && questions.metadata) {
+            questions.metadata.questionsInstructions = instructions || null;
+            questions.metadata.extractedText = extractedText || null;
+        }
+
+        return questions;
 
     } catch (error) {
         console.error("Error in generateResumeQuestionsNode:", error);
