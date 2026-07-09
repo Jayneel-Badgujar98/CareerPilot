@@ -8,7 +8,8 @@ import {
   Send, 
   Clock, 
   AlertCircle, 
-  Loader2
+  Loader2,
+  Brain
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -168,11 +169,12 @@ export default function AssessmentClient({ assessment }) {
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-neutral-200 dark:border-neutral-800/60">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
+            <Brain className="w-7 h-7 text-indigo-500 animate-pulse"/>
             <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:via-neutral-200 dark:to-indigo-300 bg-clip-text text-transparent">
               KnowledgePilot
             </span>
             <span className="px-2 py-0.5 text-[9px] font-black tracking-wider bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-550/20 rounded-md">
-              LIVE ASSESSMENT
+              Live Assessment
             </span>
           </div>
           <p className="text-xs text-neutral-500 dark:text-neutral-400 font-medium max-w-md truncate">
@@ -205,7 +207,7 @@ export default function AssessmentClient({ assessment }) {
           <div className="space-y-2">
             <h2 className="text-2xl font-extrabold tracking-tight">Evaluating Your Response...</h2>
             <p className="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed">
-              We are grading your MCQs and running an advanced AI evaluation context check on your open-ended theory answers. This should only take a few moments.
+              We are grading your MCQs and running an advanced AI evaluation context to check on your open-ended theory answers. This should only take a few moments.
             </p>
           </div>
         </div>

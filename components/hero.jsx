@@ -83,7 +83,7 @@ const HeroSection = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
             </span>
-            <span className="opacity-90">We are committed to make it #1 AI CAREER COACH</span>
+            <span className="opacity-90">We are committed to make it #1 AI Powered Tools Ecosystem</span>
             <ArrowRight className="h-3 w-3 opacity-50 group-hover:translate-x-0.5 transition-transform" />
           </div>
         </div>
@@ -111,7 +111,7 @@ const HeroSection = () => {
             >
               <div className="relative z-10 flex items-center">
                 <Sparkles className="mr-2.5 h-5 w-5 text-indigo-100 group-hover:text-white group-hover:rotate-12 transition-all duration-300" />
-                <span>AI Interview Prep</span>
+                <span>Upskill Your Career Today </span>
               </div>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
             </Button>

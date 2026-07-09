@@ -1,534 +1,3 @@
-// // "use server";
-
-// // import { generateText, tool } from "ai";
-// // import { getAIModel } from "@/lib/resumeAnalyse/ai-config";
-// // import { tavily } from "@tavily/core";
-// // import mammoth from "mammoth";
-// // import { z } from "zod";
-// // import { ANALYZE_RESUME_PROMPT } from "@/lib/Prompts/AnalyseResumePrompt";
-// // import Tesseract from 'tesseract.js';
-// // import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.mjs';
-// // import { join } from 'path';
-
-// // // Initialize Tavily Client
-// // const tvly = tavily({ apiKey: process.env.TAVILY_API_KEY });
-
-// // /**
-// //  * Helper to extract text from files
-// //  */
-// // import { pathToFileURL } from 'url';
-
-// // // Configure worker for Node.js environment
-// // // We use the absolute path to the worker file in node_modules, converted to a file URL for Windows compatibility
-// // const workerPath = join(process.cwd(), 'node_modules', 'pdfjs-dist', 'legacy', 'build', 'pdf.worker.mjs');
-// // pdfjs.GlobalWorkerOptions.workerSrc = pathToFileURL(workerPath).href;
-
-
-// // export async function extractTextFromFile(file) {
-// //   try {
-// //     const arrayBuffer = await file.arrayBuffer();
-// //     const buffer = Buffer.from(arrayBuffer);
-// //     const contentType = file.type;
-
-// //     if (contentType === "application/pdf") {
-// //       // Use pdfjs-dist directly
-// //       const doc = await pdfjs.getDocument({
-// //         data: new Uint8Array(arrayBuffer), // pdfjs expects Uint8Array or similar
-// //         useSystemFonts: true,
-// //       }).promise;
-
-// //       let fullText = "";
-// //       for (let i = 1; i <= doc.numPages; i++) {
-// //         const page = await doc.getPage(i);
-// //         const textContent = await page.getTextContent();
-// //         const pageText = textContent.items.map(item => item.str).join(' ');
-// //         fullText += pageText + "\n";
-// //       }
-// //       console.log(fullText) ;
-// //       return fullText;
-// //     } else if (
-// //       contentType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-// //       file.name.endsWith(".docx")
-// //     ) {
-// //       const result = await mammoth.extractRawText({ buffer });
-// //       return result.value;
-// //     } else if (contentType === "text/plain" || file.name.endsWith(".txt")) {
-// //       return buffer.toString();
-// //     } else {
-// //       throw new Error("Unsupported file type");
-// //     }
-// //   } catch (err) {
-// //     console.error("Text extraction error:", err);
-// //     throw new Error("Failed to extract text from file");
-// //   }
-// // }
-
-// // // --- MAIN ACTION ---
-// // export async function analyzeResumeAction(formData) {
-// //   try {
-// //     const file = formData.get("file");
-// //     if (!file) throw new Error("No file uploaded");
-
-// //     const resumeText = await extractTextFromFile(file);
-// //     const model = getAIModel();
-
-// //     console.log("Starting Analysis...");
-
-// //     const result = await generateText({
-// //       model: model,
-// //       system: ANALYZE_RESUME_PROMPT,
-// //       prompt: `
-// //         RESUME TEXT:
-// //         ${resumeText}
-
-// //         TASK:
-// //         1. Analyze the resume.
-// //         2. Call 'getMarketData' to get 2026 salary trends.
-// //         3. AFTER the tool runs, you MUST generate the final JSON.
-
-// //         CRITICAL: Return ONLY the JSON object. No markdown, no "Here is the JSON".
-// //       `,
-// //       tools: {
-// //         getMarketData: tool({
-// //           description: "Search for real-time salary ranges and job market trends for 2026.",
-// //           parameters: z.object({
-// //             query: z.string().describe("The specific search query, e.g., 'React Developer Salary 2026'"),
-// //           }),
-// //           execute: async (args) => {
-// //             // --- FIX: ROBUST ARGUMENT HANDLING ---
-// //             // Sometimes the AI passes the query as a string directly, or inside an object.
-// //             // We check both.
-// //             const query = args.query || args; 
-
-// //             console.log(`[Tool] Raw Args:`, JSON.stringify(args)); // Debug log
-
-// //             if (!query || typeof query !== 'string') {
-// //                 console.log("[Tool] Query missing, asking AI to retry.");
-// //                 return "ERROR: You forgot to provide the 'query' parameter. Please call the tool again with a valid search string.";
-// //             }
-
-// //             console.log(`[Tool] Searching Tavily for: ${query}`);
-
-// //             try {
-// //               const search = await tvly.search(query, { 
-// //                   search_depth: "basic",
-// //                   max_results: 3 
-// //               });
-
-// //               const results = search.results.map(r => `${r.title}: ${r.content}`).join("\n");
-// //               return results || "No specific salary data found. Estimate based on general market knowledge.";
-// //             } catch (e) {
-// //               console.error("[Tool] Tavily Error:", e);
-// //               return "Error connecting to search service. Please estimate salary based on internal knowledge.";
-// //             }
-// //           },
-// //         }),
-// //       },
-// //       maxSteps: 5, 
-// //     });
-
-// //     const text = result.text;
-// //     console.log("AI Final Response Length:", text.length);
-
-// //     // --- JSON EXTRACTION ---
-// //     const firstBrace = text.indexOf('{');
-// //     const lastBrace = text.lastIndexOf('}');
-
-// //     if (firstBrace === -1 || lastBrace === -1) {
-// //        console.error("Failed Response:", text);
-// //        // Fallback: If AI fails to give JSON, throw error to UI
-// //        throw new Error("The AI analyzed the resume but failed to format the output correctly. Please try again.");
-// //     }
-
-// //     const cleanJson = text.substring(firstBrace, lastBrace + 1);
-// //     return JSON.parse(cleanJson);
-
-// //   } catch (error) {
-// //     console.error("Analysis Failed:", error);
-// //     return { error: error.message || "Analysis failed" };
-// //   }
-// // }
-
-
-// "use server";
-
-// // --- UPDATED: Imported generateObject ---
-// import { generateObject, tool } from "ai"; 
-// import { getAIModel } from "@/lib/resumeAnalyse/ai-config";
-// import { tavily } from "@tavily/core";
-// import mammoth from "mammoth";
-// import { z } from "zod";
-// import { ANALYZE_RESUME_PROMPT } from "@/lib/Prompts/AnalyseResumePrompt";
-// import Tesseract from 'tesseract.js';
-// import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.mjs';
-// import { join } from 'path';
-
-// // Initialize Tavily Client
-// const tvly = tavily({ apiKey: process.env.TAVILY_API_KEY });
-
-// // --- NEW: Zod Schema for Strict JSON Output ---
-// const ResumeSchema = z.object({
-//   overallScore: z.string().describe("Score out of 100, e.g., '82/100'"),
-//   summary: z.object({
-//     profileType: z.enum(["Student", "Fresher", "Junior", "Mid-level", "Senior", "Career Switcher"]),
-//     seniorityEstimate: z.enum(["Entry", "Mid", "Senior", "Staff", "Lead"]),
-//     yearsOfExperience: z.string().describe("Estimated years, e.g., '5+ Years'"),
-//     overallAssessment: z.string().describe("2-3 sentence high-level professional summary"),
-//   }),
-//   interviewerPerspective: z.object({
-//     thought: z.string().describe("Internal monologue of a hiring manager."),
-//     sentiment: z.enum(["Positive", "Neutral", "Cautiously Optimistic", "Skeptical"]),
-//     hiringProbability: z.enum(["Low", "Medium", "High"]),
-//   }),
-//   salary: z.object({
-//     estimatedRange: z.string().describe("e.g., '$90k - $120k'"),
-//     currency: z.string().default("USD"),
-//     marketTrend: z.enum(["Low Demand", "Stable", "High Demand"]),
-//   }),
-//   strengths: z.array(z.object({
-//     title: z.string(),
-//     description: z.string(),
-//   })),
-//   weaknesses: z.array(z.object({
-//     title: z.string(),
-//     severity: z.enum(["Low", "Medium", "High"]),
-//     description: z.string(),
-//   })),
-//   improvements: z.array(z.object({
-//     issue: z.string(),
-//     section: z.string(),
-//     whyItMatters: z.string(),
-//     exampleFix: z.string(),
-//   })),
-//   recommendedProjects: z.array(z.object({
-//     name: z.string(),
-//     tech: z.string(),
-//     goal: z.string(),
-//   })),
-//   performanceMetrics: z.object({
-//     impact: z.object({ score: z.number(), reason: z.string() }),
-//     technicalDepth: z.object({ score: z.number(), reason: z.string() }),
-//     formatting: z.object({ score: z.number(), reason: z.string() }),
-//     brevity: z.object({ score: z.number(), reason: z.string() }),
-//     atsKeywords: z.object({ score: z.number(), reason: z.string() }),
-//   }),
-//   atsChecklist: z.array(z.object({
-//     item: z.string(),
-//     status: z.enum(["pass", "fail", "partial"]),
-//     note: z.string(),
-//   })),
-//   keywords: z.object({
-//     present: z.array(z.string()),
-//     missing: z.array(z.string()),
-//   }),
-//   jobFit: z.object({
-//     matches: z.array(z.object({
-//       role: z.string(),
-//       match: z.number(),
-//     })),
-//     reasoning: z.string(),
-//   }),
-//   actionItems: z.array(z.object({
-//     priority: z.enum(["high", "medium", "low"]),
-//     action: z.string(),
-//     estimatedImpact: z.enum(["Low", "Medium", "High"]),
-//   })),
-//   proTips: z.array(z.string()),
-// });
-
-// /**
-//  * Helper to extract text from files
-//  */
-// import { pathToFileURL } from 'url';
-
-// // Configure worker for Node.js environment
-// // We use the absolute path to the worker file in node_modules, converted to a file URL for Windows compatibility
-// const workerPath = join(process.cwd(), 'node_modules', 'pdfjs-dist', 'legacy', 'build', 'pdf.worker.mjs');
-// pdfjs.GlobalWorkerOptions.workerSrc = pathToFileURL(workerPath).href;
-
-
-// export async function extractTextFromFile(file) {
-//   try {
-//     const arrayBuffer = await file.arrayBuffer();
-//     const buffer = Buffer.from(arrayBuffer);
-//     const contentType = file.type;
-
-//     if (contentType === "application/pdf") {
-//       // Use pdfjs-dist directly
-//       const doc = await pdfjs.getDocument({
-//         data: new Uint8Array(arrayBuffer), // pdfjs expects Uint8Array or similar
-//         useSystemFonts: true,
-//       }).promise;
-
-//       let fullText = "";
-//       for (let i = 1; i <= doc.numPages; i++) {
-//         const page = await doc.getPage(i);
-//         const textContent = await page.getTextContent();
-//         const pageText = textContent.items.map(item => item.str).join(' ');
-//         fullText += pageText + "\n";
-//       }
-//       console.log(fullText) ;
-//       return fullText;
-//     } else if (
-//       contentType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-//       file.name.endsWith(".docx")
-//     ) {
-//       const result = await mammoth.extractRawText({ buffer });
-//       return result.value;
-//     } else if (contentType === "text/plain" || file.name.endsWith(".txt")) {
-//       return buffer.toString();
-//     } else {
-//       throw new Error("Unsupported file type");
-//     }
-//   } catch (err) {
-//     console.error("Text extraction error:", err);
-//     throw new Error("Failed to extract text from file");
-//   }
-// }
-
-// /**
-//  * Main Server Action
-//  */
-// export async function analyzeResumeAction(formData) {
-//   try {
-//     const file = formData.get("file");
-//     if (!file) throw new Error("No file uploaded");
-
-//     // 1. Extract Text
-//     const resumeText = await extractTextFromFile(file);
-
-//     // 2. Prepare AI
-//     const model = getAIModel();
-
-//     console.log("Starting Analysis with generateObject...");
-
-//     // 3. Call AI using generateObject (Forces JSON)
-//     const { object } = await generateObject({
-//       model: model,
-//       schema: ResumeSchema, // <--- Passes the strict schema
-//       system: ANALYZE_RESUME_PROMPT,
-//       prompt: `
-//         RESUME CONTENT:
-//         ----------------
-//         ${resumeText}
-//         ----------------
-
-//         INSTRUCTIONS:
-//         1. Analyze the resume deeply.
-//         2. You MUST use the 'getMarketData' tool to find 2026 salary trends.
-//         3. Do not guess salaries. Search first.
-//       `,
-//       tools: {
-//         getMarketData: tool({
-//           description: "Search for real-time salary ranges and job market trends for 2026.",
-//           parameters: z.object({
-//             query: z.string().describe("The specific search query, e.g., 'React Developer Salary 2026'"),
-//           }),
-//           execute: async (args) => {
-//             // Robust Argument Handling
-//             const query = args.query || args; 
-
-//             console.log(`[Tool] Raw Args:`, JSON.stringify(args));
-
-//             if (!query || typeof query !== 'string') {
-//                 return "ERROR: Query parameter missing. Please try again with a valid search string.";
-//             }
-
-//             console.log(`[Tool] Searching Tavily for: ${query}`);
-
-//             try {
-//               const search = await tvly.search(query, { 
-//                   search_depth: "basic",
-//                   max_results: 3 
-//               });
-
-//               const results = search.results.map(r => `${r.title}: ${r.content}`).join("\n");
-//               return results || "No specific salary data found. Estimate based on general market knowledge.";
-//             } catch (e) {
-//               console.error("[Tool] Tavily Error:", e);
-//               return "Error connecting to search service. Please estimate salary based on internal knowledge.";
-//             }
-//           },
-//         }),
-//       },
-//       maxSteps: 5, 
-//     });
-
-//     console.log("Analysis Complete. Score:", object.overallScore);
-
-//     // Return the clean object directly
-//     return object;
-
-//   } catch (error) {
-//     console.error("Analysis Failed:", error);
-//     return { error: error.message || "Analysis failed" };
-//   }
-// }
-
-// actions/analyse-resume.js
-
-
-// "use server";
-
-// import { generateObject, tool } from "ai";
-// import { getAIModel } from "@/lib/resumeAnalyse/ai-config";
-// import { tavily } from "@tavily/core";
-// import mammoth from "mammoth";
-// import { z } from "zod";
-// import { ANALYZE_RESUME_PROMPT } from "@/lib/Prompts/AnalyseResumePrompt";
-// import { join } from 'path';
-// import { pathToFileURL } from 'url';
-// import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.mjs';
-
-// // Initialize Tavily Client
-// const tvly = tavily({ apiKey: process.env.TAVILY_API_KEY });
-
-// // Configure PDF Worker
-// const workerPath = join(process.cwd(), 'node_modules', 'pdfjs-dist', 'legacy', 'build', 'pdf.worker.mjs');
-// pdfjs.GlobalWorkerOptions.workerSrc = pathToFileURL(workerPath).href;
-
-// // --- UPDATED ZOD SCHEMA WITH PREDICTIONS ---
-// const ResumeSchema = z.object({
-//   overallScore: z.string().describe("Score out of 100, e.g., '82/100'"),
-//   summary: z.object({
-//     profileType: z.enum(["Student", "Fresher", "Junior", "Mid-level", "Senior", "Career Switcher"]),
-//     seniorityEstimate: z.enum(["Entry", "Mid", "Senior", "Staff", "Lead"]),
-//     yearsOfExperience: z.string().describe("Estimated years, e.g., '5+ Years'"),
-//     overallAssessment: z.string().describe("2-3 sentence high-level professional summary"),
-//   }),
-//   // ... (Existing fields remain the same) ...
-//   interviewerPerspective: z.object({
-//     thought: z.string(),
-//     sentiment: z.enum(["Positive", "Neutral", "Cautiously Optimistic", "Skeptical"]),
-//     hiringProbability: z.enum(["Low", "Medium", "High"]),
-//   }),
-//   salary: z.object({
-//     estimatedRange: z.string(),
-//     currency: z.string(),
-//     marketTrend: z.enum(["Low Demand", "Stable", "High Demand"]),
-//   }),
-//   strengths: z.array(z.object({ title: z.string(), description: z.string() })),
-//   weaknesses: z.array(z.object({ title: z.string(), severity: z.enum(["Low", "Medium", "High"]), description: z.string() })),
-//   improvements: z.array(z.object({ issue: z.string(), section: z.string(), whyItMatters: z.string(), exampleFix: z.string() })),
-//   recommendedProjects: z.array(z.object({ name: z.string(), tech: z.string(), goal: z.string() })),
-//   performanceMetrics: z.object({
-//     impact: z.object({ score: z.number(), reason: z.string() }),
-//     technicalDepth: z.object({ score: z.number(), reason: z.string() }),
-//     formatting: z.object({ score: z.number(), reason: z.string() }),
-//     brevity: z.object({ score: z.number(), reason: z.string() }),
-//     atsKeywords: z.object({ score: z.number(), reason: z.string() }),
-//   }),
-//   atsChecklist: z.array(z.object({ item: z.string(), status: z.enum(["pass", "fail", "partial"]), note: z.string() })),
-//   keywords: z.object({ present: z.array(z.string()), missing: z.array(z.string()) }),
-//   jobFit: z.object({ matches: z.array(z.object({ role: z.string(), match: z.number() })), reasoning: z.string() }),
-//   actionItems: z.array(z.object({ priority: z.enum(["high", "medium", "low"]), action: z.string(), estimatedImpact: z.enum(["Low", "Medium", "High"]) })),
-//   proTips: z.array(z.string()),
-
-//   // --- NEW FIELD: IMPROVEMENT PREDICTION ---
-//   improvementPrediction: z.object({
-//     interviewChance: z.string().describe("Estimated % increase in interview callbacks if fixes are applied (e.g. '+40%'). Be optimistic but realistic."),
-//     salaryBoost: z.string().describe("Estimated salary increase potential (e.g. '+ $15k' or '+20%')."),
-//     summary: z.string().describe("Short punchy text on why they should use the AI builder."),
-//   }),
-// });
-
-// // --- TEXT EXTRACTION (Kept exactly as requested) ---
-// export async function extractTextFromFile(file) {
-//   try {
-//     const arrayBuffer = await file.arrayBuffer();
-//     const buffer = Buffer.from(arrayBuffer);
-//     const contentType = file.type;
-
-//     if (contentType === "application/pdf") {
-//       const doc = await pdfjs.getDocument({
-//         data: new Uint8Array(arrayBuffer),
-//         useSystemFonts: true,
-//       }).promise;
-
-//       let fullText = "";
-//       for (let i = 1; i <= doc.numPages; i++) {
-//         const page = await doc.getPage(i);
-//         const textContent = await page.getTextContent();
-//         const pageText = textContent.items.map(item => item.str).join(' ');
-//         fullText += pageText + "\n";
-//       }
-//       return fullText;
-//     } else if (
-//       contentType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-//       file.name.endsWith(".docx")
-//     ) {
-//       const result = await mammoth.extractRawText({ buffer });
-//       return result.value;
-//     } else if (contentType === "text/plain" || file.name.endsWith(".txt")) {
-//       return buffer.toString();
-//     } else {
-//       throw new Error("Unsupported file type");
-//     }
-//   } catch (err) {
-//     console.error("Text extraction error:", err);
-//     throw new Error("Failed to extract text from file");
-//   }
-// }
-
-// // --- MAIN ACTION ---
-// export async function analyzeResumeAction(formData) {
-//   try {
-//     const file = formData.get("file");
-//     if (!file) throw new Error("No file uploaded");
-
-//     const resumeText = await extractTextFromFile(file);
-//     const model = getAIModel();
-
-//     console.log("Starting Analysis...");
-
-//     const { object } = await generateObject({
-//       model: model,
-//       schema: ResumeSchema,
-//       system: ANALYZE_RESUME_PROMPT,
-//       prompt: `
-//         RESUME CONTENT:
-//         ----------------
-//         ${resumeText}
-//         ----------------
-        
-//         INSTRUCTIONS:
-//         1. Analyze the resume deeply.
-//         2. Call 'getMarketData' to find 2026 or any other latest year salary trends for this specific role.
-//         3. CRITICAL: Calculate the 'improvementPrediction' fields based on the gaps found. 
-//            (e.g., If they are missing key keywords, interview chance increases significantly if added).
-//       `,
-//       tools: {
-//         getMarketData: tool({
-//           description: "Search for real-time salary ranges and job market trends for 2026.",
-//           parameters: z.object({
-//             query: z.string().describe("The specific search query, e.g., 'React Developer Salary 2026'"),
-//           }),
-//           execute: async (args) => {
-//             const query = args.query || args;
-//             if (!query || typeof query !== 'string') return "ERROR: Query parameter missing.";
-
-//             try {
-//               const search = await tvly.search(query, { search_depth: "basic", max_results: 3 });
-//               const results = search.results.map(r => `${r.title}: ${r.content}`).join("\n");
-//               return results || "No specific salary data found.";
-//             } catch (e) {
-//               return "Error connecting to search service.";
-//             }
-//           },
-//         }),
-//       },
-//       maxSteps: 5,
-//     });
-
-//     // At the end of the function:
-//     return { ...object, originalText: resumeText };
-
-//   } catch (error) {
-//     console.error("Analysis Failed:", error);
-//     return { error: error.message || "Analysis failed" };
-//   }
-// }
-
 // actions/analyse-resume.js
 
 "use server";
@@ -539,56 +8,158 @@ import { tavily } from "@tavily/core";
 import mammoth from "mammoth";
 import { z } from "zod";
 import { ANALYZE_RESUME_PROMPT } from "@/ai/resume/prompts";
-import PdfParser from "pdf2json"; // ✅ FIX: Use pdf2json instead of pdfjs-dist
+import PdfParser from "pdf2json";
+import { GoogleGenAI } from "@google/genai";
+
+// Initialize GoogleGenAI Client
+const googleGenAIClient = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY });
 
 // Initialize Tavily Client
-const tvly = tavily({ apiKey: process.env.TAVILY_API_KEY });
+// const tvly = tavily({ apiKey: process.env.TAVILY_API_KEY });
 
-// --- UPDATED ZOD SCHEMA WITH PREDICTIONS ---
+
 const ResumeSchema = z.object({
-  overallScore: z.string().describe("Score out of 100, e.g., '82/100'"),
+  overallScore: z.string().describe("Overall resume score out of 100, formatted strictly as 'X/100' (e.g., '82/100')."),
+  
   summary: z.object({
     profileType: z.enum(["Student", "Fresher", "Junior", "Mid-level", "Senior", "Career Switcher"]),
     seniorityEstimate: z.enum(["Entry", "Mid", "Senior", "Staff", "Lead"]),
-    yearsOfExperience: z.string().describe("Estimated years, e.g., '5+ Years'"),
-    overallAssessment: z.string().describe("2-3 sentence high-level professional summary"),
+    yearsOfExperience: z.string().describe("Estimated total years of experience, e.g., '0 Years', '1-2 Years', '5+ Years'."),
+    overallAssessment: z.string().describe("A concise 2-3 sentence high-level professional summary analyzing their background."),
   }),
+  
   interviewerPerspective: z.object({
-    thought: z.string(),
+    thought: z.string().describe("Internal monologue/rationale of the recruiter or hiring manager looking at this resume. Raw and honest feedback."),
     sentiment: z.enum(["Positive", "Neutral", "Cautiously Optimistic", "Skeptical"]),
     hiringProbability: z.enum(["Low", "Medium", "High"]),
   }),
+  
   salary: z.object({
-    estimatedRange: z.string(),
-    currency: z.string(),
+    estimatedRange: z.string().describe("Estimated market salary range based on the profile and geography, e.g., '₹6,000,000 - ₹9,000,000' or '$80,000 - $110,000'."),
+    currency: z.string().describe("Three-letter ISO currency code representing the market rate context, e.g., 'INR', 'USD', 'EUR'."),
     marketTrend: z.enum(["Low Demand", "Stable", "High Demand"]),
   }),
-  strengths: z.array(z.object({ title: z.string(), description: z.string() })),
-  weaknesses: z.array(z.object({ title: z.string(), severity: z.enum(["Low", "Medium", "High"]), description: z.string() })),
-  improvements: z.array(z.object({ issue: z.string(), section: z.string(), whyItMatters: z.string(), exampleFix: z.string() })),
-  recommendedProjects: z.array(z.object({ name: z.string(), tech: z.string(), goal: z.string() })),
+  
+  strengths: z.array(
+    z.object({ 
+      title: z.string().describe("Short punchy name of the strength (e.g., 'Strong Technical Stack')."), 
+      description: z.string().describe("Detailed explanation of where this strength is evident in the resume.") 
+    })
+  ),
+  
+  weaknesses: z.array(
+    z.object({ 
+      title: z.string().describe("Name of the issue identified (e.g., 'Lack of Quantifiable Impact')."), 
+      severity: z.enum(["Low", "Medium", "High"]), 
+      description: z.string().describe("Detailed breakdown of why this hurts the resume's effectiveness.") 
+    })
+  ),
+  
+  improvements: z.array(
+    z.object({ 
+      issue: z.string().describe("What exactly needs fixing."), 
+      section: z.string().describe("The specific resume section where the fix belongs (e.g., 'Experience', 'Projects')."), 
+      whyItMatters: z.string().describe("The professional reason why making this change will increase conversion."), 
+      exampleFix: z.string().describe("A concrete, fully rewritten before/after example showing how to fix the issue.") 
+    })
+  ),
+  
+  recommendedProjects: z.array(
+    z.object({ 
+      name: z.string().describe("Title of a high-impact project they should build next to fill current gaps."), 
+      tech: z.string().describe("Comma-separated list of modern technologies they should use for this project (e.g., 'Next.js, LangGraph, Prisma')."), 
+      goal: z.string().describe("The primary objective and learning/career outcome of this project.") 
+    })
+  ),
+  
+  recommendedSkills: z.array(
+    z.object({ 
+      name: z.string().describe("Name of the trending or missing skill/tool."), 
+      demandStatus: z.enum(["Very High", "High", "Medium", "Low"]), 
+      reason: z.string().describe("Short reasoning for the demand status like what it is, what it does, and why it is in demand currently.") 
+    })
+  ),
+  
+  projectAnalysis: z.array(
+    z.object({
+      projectName: z.string().describe("Name of the project parsed from the resume."),
+      projectScore: z.number().min(0).max(100).describe("Individual evaluation score for this specific project based on impact and tech depth."),
+      summary: z.string().describe("1-2 sentence overall evaluation of the project's complexity and description quality."),
+      
+      strengths: z.array(
+        z.object({
+          title: z.string().describe("Key highlight of the project (e.g., 'Excellent Architecture')."),
+          description: z.string().describe("Elaboration on what makes this project highlight stand out.")
+        })
+      ),
+      
+      weaknesses: z.array(
+        z.object({
+          title: z.string().describe("A gap in the project description (e.g., 'Missing Deployment Link', 'Vague Architecture')."),
+          severity: z.enum(["Low", "Medium", "High"]),
+          description: z.string().describe("Detailed feedback on what is missing or weak.")
+        })
+      ),
+      
+      improvements: z.array(
+        z.object({
+          issue: z.string().describe("The specific technical or descriptive flaw."),
+          whyItMatters: z.string().describe("Why fixing this description or feature increases technical credibility."),
+          exampleFix: z.string().describe("An action-oriented rewritten bullet point for their project section.")
+        })
+      ),
+    })
+  ).describe("Array analyzing individual projects explicitly listed in the resume."),
+  
   performanceMetrics: z.object({
-    impact: z.object({ score: z.number(), reason: z.string() }),
-    technicalDepth: z.object({ score: z.number(), reason: z.string() }),
-    formatting: z.object({ score: z.number(), reason: z.string() }),
-    brevity: z.object({ score: z.number(), reason: z.string() }),
-    atsKeywords: z.object({ score: z.number(), reason: z.string() }),
+    impact: z.object({ score: z.number().min(0).max(100), reason: z.string().describe("Evaluation of metrics, data, and business/technical results achieved.") }),
+    technicalDepth: z.object({ score: z.number().min(0).max(100), reason: z.string().describe("Evaluation of complexity, tools, and engineering engineering rigor shown.") }),
+    formatting: z.object({ score: z.number().min(0).max(100), reason: z.string().describe("Evaluation of visual layout, typography consistency, and ATS scannability.") }),
+    brevity: z.object({ score: z.number().min(0).max(100), reason: z.string().describe("Evaluation of word economy—avoiding fluff and walls of text.") }),
+    atsKeywords: z.object({ score: z.number().min(0).max(100), reason: z.string().describe("Evaluation of the density and accuracy of role-relevant keywords.") }),
   }),
-  atsChecklist: z.array(z.object({ item: z.string(), status: z.enum(["pass", "fail", "partial"]), note: z.string() })),
-  keywords: z.object({ present: z.array(z.string()), missing: z.array(z.string()) }),
-  jobFit: z.object({ matches: z.array(z.object({ role: z.string(), match: z.number() })), reasoning: z.string() }),
-  actionItems: z.array(z.object({ priority: z.enum(["high", "medium", "low"]), action: z.string(), estimatedImpact: z.enum(["Low", "Medium", "High"]) })),
-  proTips: z.array(z.string()),
-
-  // --- NEW FIELD: IMPROVEMENT PREDICTION ---
+  
+  atsChecklist: z.array(
+    z.object({ 
+      item: z.string().describe("Standard ATS compliance check (e.g., 'Single Column Layout', 'No Tables/Images', 'Contact Info Present')."), 
+      status: z.enum(["pass", "fail", "partial"]), 
+      note: z.string().describe("Brief note explaining why it passed or failed, and how to rectify it if needed.") 
+    })
+  ),
+  
+  keywords: z.object({
+    present: z.array(z.string()).describe("Important industry-standard keywords successfully detected in the resume."),
+    missing: z.array(z.string()).describe("High-value target keywords that are absent but highly recommended for their target profile Type.")
+  }),
+  
+  jobFit: z.object({
+    matches: z.array(
+      z.object({ 
+        role: z.string().describe("Job title/role name (e.g., 'Full-Stack Developer', 'Frontend Engineer')."), 
+        match: z.number().min(0).max(100).describe("Percentage score representing alignment with this role.") 
+      })
+    ),
+    reasoning: z.string().describe("Comprehensive logic explaining why they fit these roles and what gaps prevent a 100% match.")
+  }),
+  
+  actionItems: z.array(
+    z.object({ 
+      priority: z.enum(["high", "medium", "low"]), 
+      action: z.string().describe("Immediate, concrete action the user should take (e.g., 'Convert layout to single-column', 'Add GitHub links')."), 
+      estimatedImpact: z.enum(["Low", "Medium", "High"]) 
+    })
+  ).describe("Prioritized list of execution steps for the user to optimize their resume."),
+  
+  proTips: z.array(z.string().describe("Insider recruitment hacks or unconventional but high-conversion resume tips customized to their experience level.")),
+  
   improvementPrediction: z.object({
     interviewChance: z.string().describe("Estimated % increase in interview callbacks if fixes are applied (e.g. '+40%'). Be optimistic but realistic."),
     salaryBoost: z.string().describe("Estimated salary increase potential (e.g. '+ $15k' or '+20%')."),
-    summary: z.string().describe("Short punchy text on why they should use the AI builder."),
+    summary: z.string().describe("Short punchy persuasive text explaining why using the AI platform's builder tools will secure these improvements."),
   }),
 });
 
-// --- TEXT EXTRACTION (FIXED FOR VERCEL) ---
+
 export async function extractTextFromFile(file) {
   try {
     const arrayBuffer = await file.arrayBuffer();
@@ -596,9 +167,9 @@ export async function extractTextFromFile(file) {
     const contentType = file.type;
 
     if (contentType === "application/pdf") {
-      // ✅ FIX: Use pdf2json which is safe for Vercel Serverless
+
       const parser = new PdfParser(null, 1); // 1 = text content only
-      
+
       return await new Promise((resolve, reject) => {
         parser.on("pdfParser_dataError", (errData) => reject(errData.parserError));
         parser.on("pdfParser_dataReady", () => {
@@ -626,7 +197,8 @@ export async function extractTextFromFile(file) {
   }
 }
 
-// --- MAIN ACTION ---
+// -- MAIN ACTION
+
 export async function analyzeResumeAction(formData) {
   try {
     const file = formData.get("file");
@@ -635,8 +207,41 @@ export async function analyzeResumeAction(formData) {
     const resumeText = await extractTextFromFile(file);
     const model = getAIModel();
 
-    console.log("Starting Analysis...");
+    console.log("Starting Analysis with Google Search...");
 
+    // Step 1: Query Google Search for real-time trends based on candidate stack & location
+    let googleSearchContext = "";
+    try {
+      console.log("[Google Search] Running real-time search queries...");
+      const searchResponse = await googleGenAIClient.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: `
+          Analyze the candidate's resume and perform a Google Search to find:
+          1. The current (2026) salary benchmarks for their specific target role, tech stack, and location.
+          2. Trending skills and modern high-demand tools they are missing.
+          3. Top 3 high-impact portfolio projects currently desired by recruiters for this exact stack.
+
+          RESUME TEXT:
+          ----------------
+          ${resumeText}
+          ----------------
+        `,
+        config: {
+          tools: [{ googleSearch: {} }]
+        }
+      });
+      
+      googleSearchContext = searchResponse.text;
+      const queries = searchResponse.candidates?.[0]?.groundingMetadata?.webSearchQueries || [];
+      console.log("[Google Search] Executed queries:", queries);
+    } catch (searchError) {
+      console.error("[Google Search] Error during web search:", searchError);
+      googleSearchContext = "No real-time data retrieved due to a connection error. Estimate based on general 2026 market standards.";
+    }
+
+    console.log("[Google Search] Context retrieved. Generating structured analysis...");
+
+    // Step 2: Call Vercel AI SDK generateObject with Google Search results injected
     const { object } = await generateObject({
       model: model,
       schema: ResumeSchema,
@@ -644,37 +249,24 @@ export async function analyzeResumeAction(formData) {
       prompt: `
         RESUME CONTENT:
         ----------------
-        ${resumeText}
+        ${resumeText} 
+        ----------------
+        
+        REAL-TIME GOOGLE SEARCH MARKET DATA (2026):
+        ----------------
+        ${googleSearchContext}
         ----------------
         
         INSTRUCTIONS:
-        1. Analyze the resume deeply.
-        2. Call 'getMarketData' to find 2026 or any other latest year salary trends for this specific role.
-        3. CRITICAL: Calculate the 'improvementPrediction' fields based on the gaps found. 
-           (e.g., If they are missing key keywords, interview chance increases significantly if added).
+        1. Analyze the resume deeply against the provided real-time Google search market data and 2026 industry standards.
+        2. Identify the candidate's target job title, core technology stack, and geographic location from their resume, and map them to the salary benchmarks found.
+        3. Evaluate EACH and EVERY project explicitly listed in the resume (e.g., 'NEXTMIND AI', 'DeepMind AI Research Agent', 'Career Pilot') in the 'projectAnalysis' array. You MUST generate an analysis entry for every single project listed on the resume. Do not truncate the list of projects.
+        4. Fill out the recommended skills, recommended projects, salary range, and currency context based on the live Google search data.
+        5. CRITICAL: Calculate the 'improvementPrediction' fields based on the gaps found.
       `,
-      tools: {
-        getMarketData: tool({
-          description: "Search for real-time salary ranges and job market trends for 2026.",
-          parameters: z.object({
-            query: z.string().describe("The specific search query, e.g., 'React Developer Salary 2026'"),
-          }),
-          execute: async (args) => {
-            const query = args.query || args;
-            if (!query || typeof query !== 'string') return "ERROR: Query parameter missing.";
-
-            try {
-              const search = await tvly.search(query, { search_depth: "basic", max_results: 3 });
-              const results = search.results.map(r => `${r.title}: ${r.content}`).join("\n");
-              return results || "No specific salary data found.";
-            } catch (e) {
-              return "Error connecting to search service.";
-            }
-          },
-        }),
-      },
-      maxSteps: 5,
     });
+
+    console.log("Analysis Completed Successfully. Score:", object.overallScore);
 
     // At the end of the function:
     return { ...object, originalText: resumeText };

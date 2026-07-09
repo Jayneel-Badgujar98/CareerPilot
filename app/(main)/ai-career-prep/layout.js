@@ -6,7 +6,7 @@ export default function InterviewLayout({ children }) {
   return (
     // Added 'flex flex-col': This prevents child margins from pushing the layout down
     // Added 'relative': Ensures proper stacking context
-    <div className="min-h-screen bg-background text-foreground flex flex-col relative">
+    <div className="min-h-screen bg-background text-foreground flex flex-col relative ">
 
 
 

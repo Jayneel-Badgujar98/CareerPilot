@@ -1,6 +1,5 @@
 import { BarLoader } from "react-spinners";
 import { Suspense } from "react";
-import BackButton from "@/components/backButton";
 
 export default function Layout({ children }) {
   return (

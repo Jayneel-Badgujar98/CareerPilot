@@ -7,7 +7,6 @@ import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { dark } from "@clerk/themes";
 import SmoothScroll from "@/components/SmoothScroll";
-import BackButton from "@/components/backButton";
 import { Analytics } from "@vercel/analytics/next"
 
 
@@ -49,7 +48,7 @@ export default function RootLayout({ children }) {
 
             <footer className="bg-muted/50 py-12">
               <div className="container mx-auto px-4 text-center text-gray-200">
-                <p>Made with 💗 by Jayneel S Badgujar</p>
+                <p>Made with 💗 by Jayneel Badgujar</p>
               </div>
             </footer>
             <Analytics />

@@ -22,7 +22,8 @@ import {
   HelpCircle,
   FileSpreadsheet,
   Sun,
-  Moon
+  Moon,
+  Brain
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -208,10 +209,12 @@ export default function CreateAssessmentPage() {
         {/* Center: Branding Logo */}
         <div className="flex items-center justify-center gap-3">
           <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
-            <Sparkles size={18} className="animate-pulse" />
+              <Brain className="w-6 h-6 text-white animate-pulse"/>
+            {/* <Sparkles size={18} className="animate-pulse" /> */}
           </div>
           <div className="flex items-center gap-2">
             <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:via-neutral-200 dark:to-indigo-300 bg-clip-text text-transparent">
+             
               KnowledgePilot
             </span>
             <span className="px-2 py-0.5 text-[10px] font-black tracking-wider bg-indigo-550/10 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/60 rounded-md uppercase">

@@ -21,6 +21,7 @@ model User {
   bio           String?
   experience    Int?
   skills        String[]
+  userType      String?
 
   // Relation to IndustryInsight
   industryInsightId String?       @db.ObjectId
@@ -98,24 +99,45 @@ model CoverLetter {
   @@index([userId])
 }
 
+
 model IndustryInsight {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  industry      String   @unique
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
   
-  // Bi-directional relation to User
-  users         User[]
+  // Identifier fields (e.g., role="all", role="full-stack", role="devops")
+  role            String   
+  
+  // 1️⃣ Market Snapshot
+  marketOutlook   String   // "Bullish", "Stable", "Bearish"
+  demandLevel     String   // "High", "Medium", "Low"
+  activeJobs      Int      // Current active job postings volume
+  topHubs         Json     // Array of locations: [{ "city": "Bengaluru", "share": 45 }, { "city": "Remote", "share": 25 }]
+  skillGapAlert   String   // Text insight: "High demand for Next.js, low supply..."
 
-  salaryRanges  Json[]
-  growthRate    Float
-  demandLevel   String
-  topSkills     String[]
-  marketOutlook String
-  keyTrends     String[]
-  recommendedSkills String[]
+  // 2️⃣ Compensation & Roles (Recharts Friendly)
+  // Store structured JSON: { "entry": 500000, "mid": 1200000, "senior": 2400000 }
+  salaryRange     Json     
+  
+  // Matrix data for comparison chart when role is "all"
+  // Array of roles with their respective volumes and median packages
+  domainComparison Json?   // [{ "domain": "DevOps", "medianSalary": 1400000, "jobCount": 12000 }, ...]
 
-  lastUpdated   DateTime @default(now())
-  nextUpdate    DateTime
+  // 3️⃣ Skills & Tech Radar
+  topSkills       String[] // Core skills (React, Node, TypeScript)
+  emergingTech    String[] // Next-gen tech (LangGraph, Next.js Server Actions)
+  decliningSkills String[] // Outdated tech (jQuery, legacy PHP)
+  skillProximity  Json     // Paired skills: [{ "skill": "MongoDB", "pairsWith": "Prisma", "frequency": "85%" }]
+
+  // Back-relation to User
+  users           User[]
+
+  // Metadata for caching optimization
+  createdAt       DateTime @default(now())
+  lastUpdated     DateTime @updatedAt
+  nextUpdate      DateTime // Timestamp to let Cron job know when to re-fetch
+  
+  @@unique([role]) // Ensures we have exactly one document per role/track
 }
+
 
 model InterviewSession {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId

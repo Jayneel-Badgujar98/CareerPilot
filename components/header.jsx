@@ -41,7 +41,7 @@ export default async function Header() {
         <div className="flex items-center space-x-2 md:space-x-4">
           <SignedIn>
 
-            <Link href="/dashboard">
+            <Link href="/industry-insights">
               <Button
                 variant="outline"
                 className="hidden md:inline-flex items-center gap-2 border-primary/20 hover:bg-primary/5 transition-all duration-200 shadow-sm"
@@ -139,7 +139,7 @@ export default async function Header() {
           </SignedIn>
 
           <SignedOut>
-            <SignInButton mode="modal">
+            <SignInButton forceRedirectUrl="/industry-insights" mode="modal">
               <Button variant="outline" className="border-primary/20 hover:bg-primary/5 hover:text-primary">
                 Sign In
               </Button>

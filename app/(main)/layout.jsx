@@ -6,7 +6,7 @@ const MainLayout = ({ children }) => {
     <div className="mt-20 container mx-auto mb-16">
 
       <Suspense fallback={<PageSkeleton />}>
-        <BackButton />
+        {/* <BackButton /> */}
         {children}
       </Suspense>
     </div>
@@ -32,3 +32,22 @@ function PageSkeleton() {
     </div>
   );
 }
+
+
+// after the user completes the auth via clerk auth then redirect
+// him to the complete profile page where he will be asked to answer
+// otheer details such as who are you ? 
+// options are student , working professional 
+
+// for both student and working professional show the same things below and also you can also use the onboarding page is already there in the (main)
+
+// select Industry dropdown there will be many industries and then 
+// below show there as Select Specialization 
+// now below there will be two options both as optional
+// and down "Skills You Know" here the user will enter his skills 
+// and last option Upload Your Resume as optional 
+
+
+// after the user completes his profile redirect him to the industry insights page 
+// career pilot is an app which contains several ai Growth Tools for Both the Students and Working Professionals
+// to upskill his / her career 

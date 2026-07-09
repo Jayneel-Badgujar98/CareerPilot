@@ -13,9 +13,14 @@ export async function generateCoverLetter(data) {
 
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
+    include: {
+      industryInsight: true,
+    },
   });
 
   if (!user) throw new Error("User not found");
+
+  const userIndustry = user.industryInsight?.role?.split("-")?.[0] || "Technology";
 
   const prompt = `
     Write a professional cover letter for a ${data.jobTitle} position at ${
@@ -23,7 +28,7 @@ export async function generateCoverLetter(data) {
   }.
     
     About the candidate:
-    - Industry: ${user.industry}
+    - Industry: ${userIndustry}
     - Years of Experience: ${user.experience}
     - Skills: ${user.skills?.join(", ")}
     - Professional Background: ${user.bio}

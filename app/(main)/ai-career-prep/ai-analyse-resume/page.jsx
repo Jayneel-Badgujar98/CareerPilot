@@ -68,9 +68,6 @@ export default function ResumeAnalyzer() {
     }
   };
 
-  const handleDownloadReport = () => {
-    alert("Downloading analysis report...");
-  };
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -102,7 +99,7 @@ export default function ResumeAnalyzer() {
     : [];
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-green-500/30 overflow-x-hidden">
+    <div className="min-h-screen bg-background text-white font-sans selection:bg-green-500/30 overflow-x-hidden">
 
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 pt-8 md:pt-12 pb-6 md:pb-8">
@@ -116,22 +113,11 @@ export default function ResumeAnalyzer() {
               Advanced biometric scan for your career documents. Optimize for ATS algorithms and Human Recruiters.
             </p>
           </div>
-          {/* <div className="flex flex-col items-start md:items-end gap-3 w-full md:w-auto">
-            {result && !result.error && (
-              <button
-                onClick={handleDownloadReport}
-                className="flex items-center justify-center gap-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-white px-4 py-2.5 rounded-lg transition-all text-sm font-medium w-full md:w-auto active:scale-95"
-              >
-                <Download size={16} /> Export Report
-              </button>
-            )}
-          </div> */}
         </header>
       </div>
 
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 pb-20 space-y-8 md:space-y-10">
-
 
         <div className="bg-[#0f0f0f] border border-neutral-800 rounded-2xl p-6 md:p-10 text-center transition-all hover:border-neutral-600 relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-b from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
@@ -183,6 +169,21 @@ export default function ResumeAnalyzer() {
                       <span className="text-neutral-400 text-sm md:text-base">Exp. Detected</span>
                       <span className="text-white font-semibold text-sm md:text-base">{result.summary.yearsOfExperience}</span>
                     </div>
+                    {result.salary && (
+                      <>
+                        <div className="flex justify-between items-center py-2 border-b border-neutral-800">
+                          <span className="text-neutral-400 text-sm md:text-base">Est. Salary</span>
+                          <span className="text-white font-semibold text-sm md:text-base">{result.salary.estimatedRange} ({result.salary.currency})</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2">
+                          <span className="text-neutral-400 text-sm md:text-base">Market Trend</span>
+                          <span className={`font-semibold text-sm md:text-base ${
+                            result.salary.marketTrend === 'High Demand' ? 'text-green-400' :
+                            result.salary.marketTrend === 'Stable' ? 'text-blue-400' : 'text-yellow-400'
+                          }`}>{result.salary.marketTrend}</span>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </motion.div>
 
@@ -310,28 +311,141 @@ export default function ResumeAnalyzer() {
                 </div>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Existing Project Evaluation */}
+              {result.projectAnalysis && result.projectAnalysis.length > 0 && (
+                <motion.div variants={itemVariants} className="space-y-6">
+                  <h3 className="text-xl md:text-2xl font-bold text-white flex items-center gap-3">
+                    <Code className="text-purple-400" size={24} /> Existing Project Evaluation
+                  </h3>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {result.projectAnalysis.map((proj, i) => (
+                      <div key={i} className="bg-[#111] border border-neutral-800 rounded-2xl p-6 md:p-8 hover:border-purple-900/30 transition-colors flex flex-col justify-between">
+                        <div>
+                          <div className="flex justify-between items-start mb-4 gap-4">
+                            <h4 className="font-bold text-white text-lg md:text-xl truncate">{proj.projectName}</h4>
+                            <div className="flex items-center gap-2 bg-neutral-900 px-3 py-1.5 rounded-xl border border-neutral-800 shrink-0">
+                              <span className="text-xs text-neutral-500 font-medium">Score</span>
+                              <span className={`font-mono font-bold ${
+                                proj.projectScore > 80 ? 'text-green-400' :
+                                proj.projectScore > 60 ? 'text-blue-400' : 'text-yellow-400'
+                              }`}>{proj.projectScore}/100</span>
+                            </div>
+                          </div>
+                          <p className="text-sm text-neutral-300 mb-6 italic leading-relaxed">"{proj.summary}"</p>
+
+                          <div className="space-y-4">
+                            {/* Strengths */}
+                            {proj.strengths?.length > 0 && (
+                              <div>
+                                <span className="text-xs text-green-400 font-bold uppercase tracking-wider block mb-2">Strengths</span>
+                                <ul className="space-y-2">
+                                  {proj.strengths.map((str, idx) => (
+                                    <li key={idx} className="text-xs text-neutral-400 border-l-2 border-green-500/30 pl-3">
+                                      <strong className="text-neutral-200 block mb-0.5">{str.title}</strong>
+                                      {str.description}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+
+                            {/* Weaknesses */}
+                            {proj.weaknesses?.length > 0 && (
+                              <div className="pt-2">
+                                <span className="text-xs text-red-400 font-bold uppercase tracking-wider block mb-2">Weaknesses</span>
+                                <ul className="space-y-2">
+                                  {proj.weaknesses.map((weak, idx) => (
+                                    <li key={idx} className="text-xs text-neutral-400 border-l-2 border-red-500/30 pl-3">
+                                      <span className="flex items-center gap-2 mb-0.5">
+                                        <strong className="text-neutral-200">{weak.title}</strong>
+                                        <span className="text-[9px] bg-red-950/20 text-red-400 px-1.5 py-0.5 rounded border border-red-900/30 uppercase tracking-widest font-bold">{weak.severity}</span>
+                                      </span>
+                                      {weak.description}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+
+                            {/* Improvements */}
+                            {proj.improvements?.length > 0 && (
+                              <div className="pt-2">
+                                <span className="text-xs text-amber-400 font-bold uppercase tracking-wider block mb-2">Actionable Improvements</span>
+                                <ul className="space-y-3">
+                                  {proj.improvements.map((imp, idx) => (
+                                    <li key={idx} className="bg-amber-950/10 p-3 rounded-xl border border-amber-900/20">
+                                      <span className="text-xs text-amber-200 font-semibold block mb-1">{imp.issue}</span>
+                                      <span className="text-[11px] text-neutral-450 block mb-2">{imp.whyItMatters}</span>
+                                      <div className="text-[11px] bg-black/40 p-2 rounded border-l border-amber-500 font-mono text-neutral-200">
+                                        <span className="text-amber-500 font-bold">Suggested:</span> {imp.exampleFix}
+                                      </div>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Recommended Projects, Skills & Pro Tips */}
+              <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="bg-[#111] border border-neutral-800 rounded-2xl p-6 md:p-8">
                   <h3 className="text-white font-bold text-lg flex items-center gap-2 mb-6"><Code size={20} /> Recommended Projects</h3>
                   <div className="space-y-4">
                     {result.recommendedProjects.map((proj, i) => (
-                      <div key={i} className="p-4 bg-neutral-900/40 rounded-xl border border-neutral-800"><h4 className="font-bold text-white">{proj.name}</h4><p className="text-sm text-neutral-400">{proj.goal}</p></div>
+                      <div key={i} className="p-4 bg-neutral-900/40 rounded-xl border border-neutral-800">
+                        <h4 className="font-bold text-white text-sm mb-1">{proj.name}</h4>
+                        {proj.tech && <p className="text-xs text-purple-400 mb-2 font-medium">Stack: {proj.tech}</p>}
+                        <p className="text-xs text-neutral-400 leading-snug">{proj.goal}</p>
+                      </div>
                     ))}
                   </div>
                 </div>
+
+                <div className="bg-[#111] border border-neutral-800 rounded-2xl p-6 md:p-8">
+                  <h3 className="text-emerald-400 font-bold text-lg flex items-center gap-2 mb-6"><Sparkles className="text-emerald-400" size={20} /> Trending & Missing Skills</h3>
+                  <div className="space-y-4">
+                    {result.recommendedSkills?.map((skill, i) => (
+                      <div key={i} className="p-4 bg-neutral-900/40 rounded-xl border border-neutral-800">
+                        <div className="flex justify-between items-center mb-1.5">
+                          <h4 className="font-bold text-white text-sm">{skill.name}</h4>
+                          <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold ${
+                            skill.demandStatus === 'Very High' ? 'bg-red-950/30 text-red-400 border border-red-900/30' :
+                            skill.demandStatus === 'High' ? 'bg-amber-950/30 text-amber-400 border border-amber-900/30' :
+                            'bg-blue-950/30 text-blue-400 border border-blue-900/30'
+                          }`}>
+                            {skill.demandStatus}
+                          </span>
+                        </div>
+                        <p className="text-xs text-neutral-400 leading-snug">{skill.reason}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="bg-[#111] border border-neutral-800 rounded-2xl p-6 md:p-8">
                   <h3 className="text-yellow-400 font-bold text-lg flex items-center gap-2 mb-6"><Lightbulb size={20} /> Pro Tips</h3>
                   <ul className="space-y-4">
-                    {result.proTips.map((tip, i) => (<li key={i} className="flex gap-4 p-2 text-sm text-neutral-300"><span className="text-yellow-500/50 font-serif italic">{i + 1}.</span>{tip}</li>))}
+                    {result.proTips.map((tip, i) => (
+                      <li key={i} className="flex gap-4 p-2 text-sm text-neutral-300">
+                        <span className="text-yellow-500/50 font-serif italic">{i + 1}.</span>
+                        {tip}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </motion.div>
 
-              <ResumeRefiner
+              {/* <ResumeRefiner
                 originalResumeText={resumeText || "Resume text unavailable. Please re-upload."}
                 feedbackData={result}
                 userFile={file}
-              />
+              /> */}
 
             </motion.div>
           )}
@@ -341,84 +455,3 @@ export default function ResumeAnalyzer() {
   );
 }
 
-
-{/* <motion.div 
-                variants={itemVariants} 
-                className="relative overflow-hidden rounded-3xl border border-neutral-800 mb-12 group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-purple-900/20 to-blue-900/20 z-0 animate-gradient-x bg-[length:200%_100%]"></div>
-                
-                <div className="relative z-10 p-8 md:p-12 flex flex-col lg:flex-row items-center justify-between gap-10 bg-[#0a0a0a]/80 backdrop-blur-sm">
-                  
-                  {/* Left Side: Copy *
-                  <div className="max-w-2xl text-center lg:text-left space-y-6">
-                    <h2 className="text-3xl md:text-4xl font-bold text-white flex flex-col lg:flex-row items-center gap-3 justify-center lg:justify-start">
-                      <Sparkles className="text-purple-400 animate-pulse" fill="currentColor" size={32} />
-                      <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200">
-                        Want to fix these gaps instantly?
-                      </span>
-                    </h2>
-                    
-                    <p className="text-neutral-300 text-lg leading-relaxed">
-                       Don't just analyze—<span className="text-white font-bold">Auto-Fix</span>. 
-                       Use CareerPilot's AI Builder to rewrite your bullet points, 
-                       fill skill gaps, and optimize for the ATS in one click.
-                    </p>
-
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
-                      <motion.button 
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={handleRefineClick}
-                        className="bg-white text-black px-8 py-4 rounded-xl font-bold hover:bg-neutral-200 transition-colors flex items-center justify-center gap-2 w-full sm:w-auto shadow-[0_0_30px_rgba(255,255,255,0.3)]"
-                      >
-                         <Zap size={20} fill="currentColor" className="text-yellow-600" />
-                         Refine My Resume Now
-                      </motion.button>
-                      <button className="px-8 py-4 rounded-xl font-bold border border-neutral-700 hover:bg-neutral-800 transition-colors text-white w-full sm:w-auto">
-                         View Live Demo
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Right Side: Dynamic AI Prediction Card *
-                  <div className="hidden lg:block">
-                     <motion.div 
-                       initial={{ rotate: 3, y: 10 }}
-                       whileHover={{ rotate: 0, y: 0, scale: 1.02 }}
-                       transition={{ type: "spring", stiffness: 300 }}
-                       className="w-80 bg-gradient-to-tr from-neutral-900 to-neutral-800 rounded-2xl border border-neutral-700 shadow-2xl p-6 relative"
-                     >
-                       <div className="absolute -top-4 -right-4 bg-green-500 text-black font-bold px-4 py-2 rounded-full shadow-lg text-sm flex items-center gap-2 animate-bounce">
-                          <TrendingUp size={16} /> Projected Growth
-                       </div>
-
-                       <div className="flex justify-center mb-6">
-                          <div className="p-4 bg-neutral-800 rounded-full border border-neutral-700">
-                             <Briefcase size={48} className="text-purple-400" />
-                          </div>
-                       </div>
-
-                       <div className="space-y-4">
-                          <div className="flex justify-between items-center border-b border-neutral-700 pb-3">
-                             <span className="text-neutral-400 text-sm">Interview Rate</span>
-                             <span className="text-green-400 font-bold text-lg">
-                                {result.improvementPrediction?.interviewChance || "+20%"}
-                             </span>
-                          </div>
-                          <div className="flex justify-between items-center border-b border-neutral-700 pb-3">
-                             <span className="text-neutral-400 text-sm">Salary Potential</span>
-                             <span className="text-green-400 font-bold text-lg">
-                                {result.improvementPrediction?.salaryBoost || "+$10k"}
-                             </span>
-                          </div>
-                       </div>
-
-                       <p className="text-xs text-neutral-500 mt-4 text-center italic">
-                          "{result.improvementPrediction?.summary || "Based on market gaps found in your resume."}"
-                       </p>
-                     </motion.div>
-                  </div>
-
-                </div>
-              </motion.div> */}

@@ -7,10 +7,10 @@ import { Mic, FileText, Code2, Sparkles, ArrowRight, Lock, Clock, Brain } from "
 
 export default function InterviewHub() {
   return (
-    // Changed min-h-screen to min-h-dvh for better mobile browser support
-    <main className="min-h-dvh bg-black selection:bg-indigo-500/30">
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
+    <main className="min-h-dvh bg-background selection:bg-indigo-500/30">
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-12 md:pt-24 md:pb-24">
 
 
         <div className="text-center mb-12 md:mb-20">
@@ -41,25 +41,6 @@ export default function InterviewHub() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
 
-          {/* <FeatureCard
-            href="/ai-career-prep/ai-mock-interview"
-            title="AI Mock Interview"
-            description="Experience a realistic voice interview with our AI. Get instant feedback on your tone, pace, and answer quality."
-            icon={<Mic className="w-6 h-6 text-white" />}
-            gradient="from-violet-600 to-indigo-600"
-            delay={0.3}
-            isNew={true}
-          /> */}
-
-          {/* <FeatureCard
-            href="/ai-career-prep/mock-interview-quiz"
-            title="Mock Interview Quiz"
-            description="Access 5000+ curated questions from top tech companies. Test your knowledge across multiple domains."
-            icon={<FileText className="w-6 h-6 text-white" />}
-            gradient="from-blue-600 to-cyan-600"
-            delay={0.4}
-          /> */}
-
           <FeatureCard
             href="/ai-career-prep/ai-knowledge-pilot"
             title="AI Knowledge Pilot"
@@ -69,6 +50,16 @@ export default function InterviewHub() {
             delay={0.3}
           />
 
+          <FeatureCard
+            href="/ai-career-prep/ai-analyse-resume"
+            title="AI Analyze Resume"
+            description="Get detailed feedback on your resume with actionable insights to improve your chances of getting hired."
+            icon={<FileText className="w-6 h-6 text-white" />}
+            gradient="from-green-600 to-emerald-600"
+            delay={0.4}
+            isNew={true}
+          />
+
           <ComingSoonCard delay={0.5} />
         </div>
       </div>
@@ -76,9 +67,6 @@ export default function InterviewHub() {
   );
 }
 
-// ==========================================
-// FEATURE CARD (Responsive & Touch-Optimized)
-// ==========================================
 function FeatureCard({ title, description, icon, href, gradient, delay, isNew }) {
   return (
     <Link href={href} className="block group h-full relative w-full">
@@ -195,9 +183,7 @@ function FeatureCard({ title, description, icon, href, gradient, delay, isNew })
   );
 }
 
-// ==========================================
-// COMING SOON CARD (Responsive)
-// ==========================================
+
 function ComingSoonCard({ delay }) {
   return (
     <motion.div
